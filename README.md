@@ -1,3 +1,4 @@
+![Trades Logo](./assets/tradeslogo.png)
 # 🛡️ Trades: O Hub dos Colecionadores
 
 [![GitHub license](https://img.shields.io/github/license/seu-usuario/trades?style=flat-square)](https://github.com/seu-usuario/trades/blob/main/LICENSE)
