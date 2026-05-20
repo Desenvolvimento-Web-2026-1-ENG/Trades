@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detalhes do Item</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Sora:wght@600;700;800&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#ffdad6",
+                    "surface-container-lowest": "#070e1a",
+                    "secondary": "#aec6ff",
+                    "inverse-primary": "#00696f",
+                    "outline-variant": "#3a494b",
+                    "on-surface": "#dbe3f4",
+                    "surface-dim": "#0c1420",
+                    "primary-fixed": "#74f5ff",
+                    "on-tertiary-fixed-variant": "#5700c9",
+                    "tertiary-fixed": "#e9ddff",
+                    "surface-bright": "#323947",
+                    "on-surface-variant": "#b9cacb",
+                    "on-primary-fixed": "#002022",
+                    "on-primary": "#00363a",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-tint": "#00dbe7",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#00dbe7",
+                    "surface-container-high": "#232a37",
+                    "on-secondary-fixed": "#001a42",
+                    "surface-container-highest": "#2d3542",
+                    "surface-variant": "#2d3542",
+                    "surface-container": "#18202c",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#004396",
+                    "on-tertiary-container": "#7318ff",
+                    "secondary-fixed": "#d8e2ff",
+                    "primary-container": "#00f2ff",
+                    "inverse-on-surface": "#29313e",
+                    "on-tertiary": "#3c0090",
+                    "on-background": "#dbe3f4",
+                    "on-error": "#690005",
+                    "background": "#0c1420",
+                    "secondary-container": "#4f8eff",
+                    "surface": "#0c1420",
+                    "inverse-surface": "#dbe3f4",
+                    "surface-container-low": "#141c28",
+                    "tertiary": "#fcf5ff",
+                    "tertiary-fixed-dim": "#d1bcff",
+                    "on-secondary-container": "#00275e",
+                    "tertiary-container": "#e3d4ff",
+                    "primary": "#e1fdff",
+                    "on-primary-container": "#006a71",
+                    "on-secondary": "#002e6a",
+                    "outline": "#849495",
+                    "on-tertiary-fixed": "#23005b",
+                    "secondary-fixed-dim": "#aec6ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-xl-mobile": ["Sora"],
+                    "headline-md": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "label-md": ["JetBrains Mono"],
+                    "headline-sm": ["Sora"],
+                    "body-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-xl": ["Sora"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(24, 32, 44, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+        }
+        .holo-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        .holo-glow::after {
+            content: "";
+            position: absolute;
+            top: -150%;
+            left: -150%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(
+                45deg,
+                transparent 20%,
+                rgba(0, 219, 231, 0.1) 45%,
+                rgba(255, 255, 255, 0.2) 50%,
+                rgba(0, 219, 231, 0.1) 55%,
+                transparent 80%
+            );
+            transform: rotate(25deg);
+            animation: holo-sweep 6s infinite linear;
+            pointer-events: none;
+        }
+        @keyframes holo-sweep {
+            0% { transform: translate(-20%, -20%) rotate(25deg); }
+            100% { transform: translate(20%, 20%) rotate(25deg); }
+        }
+        .neon-border {
+            box-shadow: 0 0 10px rgba(0, 219, 231, 0.3), inset 0 0 10px rgba(0, 219, 231, 0.2);
+        }
+        .chart-gradient {
+            background: linear-gradient(to top, transparent, rgba(0, 219, 231, 0.05));
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-6 md:px-margin-desktop h-16 sticky top-0 z-50 bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-8">
+<img alt="TRADES Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2qYl2Lze96O_E8E73jPDRsxaA8XW7yPGdXsydDNtvlv-oggIDpgVDXQZ8ITZBTkLP05rThSGhmXrIm9HXVlRyAZ4pXLUOOA2zNlCEc4PQ5UV3bculVIumJCJ1wXa4xtWJ781BPsIih9CVC7fx0tevN3aZNXWGr8tQXJ0DUW997DS741D9K40A4fzJTRoE02e57T3Ok1Bq1xulswv5XPjh76DQWXHVeV0tHdB0wIt06zIuh0OssgfRA9Q-I8OtafRgmY1an9zzRC25"/>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-label-md text-label-md text-primary-fixed border-b-2 border-primary-fixed transition-all duration-200" href="#">Mercado</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-200" href="#">Leilões</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-all duration-200" href="#">Cofre</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant scale-75">search</span>
+<input class="bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-label-md focus:ring-1 focus:ring-primary-fixed w-64" placeholder="Buscar Ativos..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:scale-110 transition-transform" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:scale-110 transition-transform" data-icon="notifications">notifications</span>
+<img alt="User Avatar" class="w-8 h-8 rounded-full border border-primary-fixed/30 cursor-pointer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHbzeb4w-xcIH_guW-S2lwX4JG6oJpDZ_xH45o-Lf2DG4SCez4nm6w7KsPwlsTF3oyJYl40__GQnu-dYDYM_VtpqzHEWOUdMscZof6x0nKfUObImmttQeNtj1FaDSX9nuK6bhMgmkK-TBdnqjD6mtvs0jbQuJnurjI7t4uwWdaSOsoZTmmwDHmZ8N_aLed6j3Er45I3hUM9yk85PUCbVy9bbtaYYjtlLLBF4vVeZsYbkPReH_SPnm2wWj7TQcCb253jEDuIcM1bLPd"/>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col z-40 bg-surface-container-low/50 backdrop-blur-2xl border-r border-outline-variant/30 shadow-2xl hidden lg:flex">
+<div class="p-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center border border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="dashboard">dashboard</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">Pro Trader</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Nível 42</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Painel</span>
+</a>
+<a class="bg-secondary-container/20 text-primary-fixed border-l-4 border-primary-fixed px-4 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Meu Inventário</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-md text-label-md">Explorar Trocas</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-md text-label-md">Propostas Ativas</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Configurações</span>
+</a>
+</nav>
+<div class="p-6 mt-auto space-y-2">
+<button class="w-full bg-gradient-to-r from-primary-fixed-dim to-secondary-container text-on-primary-fixed font-headline-sm py-3 rounded-lg shadow-[0_0_15px_rgba(0,219,231,0.3)] active:scale-95 transition-transform">
+                    Nova Proposta
+                </button>
+<div class="pt-4 flex flex-col gap-2">
+<a class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help">help</span> Ajuda
+                    </a>
+<a class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span> Sair
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-64 p-6 md:p-margin-desktop bg-[radial-gradient(circle_at_50%_-20%,rgba(0,219,231,0.08),transparent_50%)]">
+<div class="max-w-container-max mx-auto">
+<!-- Item Details Section -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-12 mb-16">
+<!-- Left: Large Item Image -->
+<div class="xl:col-span-5 flex flex-col gap-6">
+<div class="glass-panel rounded-2xl p-8 holo-glow group cursor-zoom-in">
+<div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-surface-container-highest/30">
+<img alt="Carta Pokémon Rara" class="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)] group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqBDsdVwmhnI9A1QewElR_qar9X0oE6gRlCdCzjoAGKmkQtpALw0kWMmo7sLp_UdESZPivGKuUzxPrv0syG1Ui07MCYGCM7XvTCLU1fTULl97ACoMQKrNSc0QgcSUg9erFaujdK6ebcUirTObOnlucqf_N8kgTpwtQAD1lDAhrAdSwehNLvgtKP24JSeULOhv_sx-yGjvsuQNTHHEY2Zj6AM1_KZhMwj2OCW2OoHr3oiiHX5px8hyaCZJuLGIbPk7VDo-6J7hol9z0"/>
+<!-- HUD Overlays -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<span class="bg-surface-container-lowest/80 backdrop-blur-md px-3 py-1 rounded text-primary-fixed font-label-sm text-label-sm border border-primary-fixed/30">ID: #PX-99210</span>
+</div>
+<div class="absolute bottom-4 right-4 animate-pulse">
+<div class="flex items-center gap-2 bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full font-label-sm text-label-sm font-bold shadow-[0_0_10px_rgba(0,219,231,0.6)]">
+<span class="w-2 h-2 rounded-full bg-on-primary-fixed"></span>
+                                        ATIVO AO VIVO
+                                    </div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="aspect-square glass-panel rounded-lg overflow-hidden border-primary-fixed/40">
+<img class="w-full h-full object-cover opacity-100" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPp4qHd_O1f_Mhhsw1DqeZFQfLSUH38Ou5WVS5bAHMt9xqWD2s1MiZ8cLA6z6qvMbfgu-ylo5xjCkLoUYRMT5o_LoXKdvuXoxN3UoW09v0w9bRCkrHwfzw7jLpDTYqbBq-jJF3INkuN4VBJS7YSMORXH6vyUD7jxD_jLdqXGvcDsVITLlrIj6DzEhsG7ybA6edgIBYPIbnBKzZpUR5BWKOSz5dDDflAiEek89VpXbqEASf3p67SwVugiMAhaUoj5ct2tqZXJkHoSQv"/>
+</div>
+<div class="aspect-square glass-panel rounded-lg overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABdmKpiztPGLGtTtR_uRiB3JWLEHh9pPD2A2aFXbTjUEr3rlX7kZ754kyNuSgcyk0KrKcmLyPj6IWgVbIeGy7ZEXWNbXyWFHYurre8t8Xry_lJOUyR2JebLR8AlHoMRJT5HGHUxdeC4LE6Hqf-fydFSuV7ge-xG0zkhx8ibJl_V6E6hB03g8iWfFdM8PWkFiiPgUR7orjS896n32FQtyUXAWuKziNs_5KOC_Zk5_S4f2L-e6Sy_sU3hLJCUmOjH_4Y9_BNVNo7FAlt"/>
+</div>
+<div class="aspect-square glass-panel rounded-lg overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="360">360</span>
+</div>
+<div class="aspect-square glass-panel rounded-lg overflow-hidden opacity-50 hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="play_circle">play_circle</span>
+</div>
+</div>
+</div>
+<!-- Right: Details -->
+<div class="xl:col-span-7 flex flex-col">
+<div class="flex flex-wrap items-center gap-3 mb-4">
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-primary-fixed px-3 py-1 bg-primary-fixed/10 border border-primary-fixed/20 rounded">LENDÁRIO</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-tertiary-container px-3 py-1 bg-tertiary-container/10 border border-tertiary-container/20 rounded">GEM MINT 10</span>
+<span class="font-label-sm text-label-sm uppercase tracking-[0.2em] text-on-surface-variant px-3 py-1 bg-surface-container-highest/30 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified">verified</span> AUTENTICADO
+                            </span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2 drop-shadow-sm">Rayquaza Gold Star #107</h1>
+<p class="font-label-md text-label-md text-on-surface-variant mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed scale-75" data-icon="storefront">storefront</span> 
+                            Propriedade de <span class="text-primary-fixed cursor-pointer hover:underline">VaultMaster_X</span>
+<span class="text-[10px] opacity-30">•</span> 
+                            Listado há 2 horas
+                        </p>
+<div class="glass-panel rounded-xl p-8 mb-8 border-l-4 border-l-primary-fixed">
+<div class="flex justify-between items-end mb-6">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Valor Est. de Mercado</div>
+<div class="font-headline-lg text-headline-lg text-on-surface tracking-tight">45.250,00 <span class="text-primary-fixed-dim">TRD</span></div>
+</div>
+<div class="text-right">
+<div class="font-label-sm text-label-sm text-primary-fixed-dim uppercase mb-1 flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span> +12.4%
+                                    </div>
+<div class="font-label-md text-label-md text-on-surface-variant">$45.250 USD</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="flex-1 bg-primary-fixed text-on-primary-fixed font-headline-sm py-4 rounded-lg flex items-center justify-center gap-3 hover:shadow-[0_0_25px_rgba(0,219,231,0.4)] transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+                                    Fazer Proposta de Troca
+                                </button>
+<button class="px-8 border border-outline-variant hover:border-primary-fixed hover:text-primary-fixed text-on-surface font-headline-sm py-4 rounded-lg flex items-center justify-center gap-3 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+                                    Lista de Desejos
+                                </button>
+</div>
+</div>
+<div class="space-y-8">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="description">description</span> Análise do Ativo
+                                </h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                                    Este Rayquaza Gold Star ultra-raro da expansão EX Deoxys representa o auge da coleção. Com um Rayquaza de cor escura distinta e estrelas holográficas douradas, este espécime específico recebeu a nota Gem Mint 10 pela PSA. Sua preservação é inigualável, apresentando zero desgaste nas bordas reversas e centralização perfeita.
+                                </p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="glass-panel p-4 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Centralização</div>
+<div class="font-label-md text-label-md text-on-surface">10 / 10</div>
+</div>
+<div class="glass-panel p-4 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Cantos</div>
+<div class="font-label-md text-label-md text-on-surface">10 / 10</div>
+</div>
+<div class="glass-panel p-4 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Bordas</div>
+<div class="font-label-md text-label-md text-on-surface">9.5 / 10</div>
+</div>
+<div class="glass-panel p-4 rounded-lg">
+<div class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Superfície</div>
+<div class="font-label-md text-label-md text-on-surface">10 / 10</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid for Market & Provenance -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Market Trends Chart -->
+<div class="lg:col-span-2 glass-panel rounded-2xl p-8 flex flex-col h-full">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="monitoring">monitoring</span> Tendências de Mercado
+                            </h3>
+<div class="flex bg-surface-container-highest/50 p-1 rounded-lg">
+<button class="px-3 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface">1M</button>
+<button class="px-3 py-1 font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed rounded">6M</button>
+<button class="px-3 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface">1A</button>
+<button class="px-3 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface">TUDO</button>
+</div>
+</div>
+<div class="flex-1 min-h-[300px] relative">
+<!-- Visual placeholder for chart -->
+<div class="absolute inset-0 chart-gradient rounded-xl flex items-end">
+<svg class="w-full h-4/5 overflow-visible" viewbox="0 0 400 100">
+<path class="text-primary-fixed drop-shadow-[0_0_8px_rgba(0,219,231,0.8)]" d="M0,80 Q50,70 100,75 T200,40 T300,30 T400,10" fill="none" stroke="currentColor" stroke-width="2"></path>
+<circle class="text-primary-fixed" cx="0" cy="80" fill="currentColor" r="3"></circle>
+<circle class="text-primary-fixed" cx="100" cy="75" fill="currentColor" r="3"></circle>
+<circle class="text-primary-fixed" cx="200" cy="40" fill="currentColor" r="3"></circle>
+<circle class="text-primary-fixed" cx="300" cy="30" fill="currentColor" r="3"></circle>
+<circle class="text-primary-fixed shadow-lg" cx="400" cy="10" fill="currentColor" r="4"></circle>
+</svg>
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-10 pointer-events-none">
+<div class="border-b border-on-surface"></div>
+<div class="border-b border-on-surface"></div>
+<div class="border-b border-on-surface"></div>
+<div class="border-b border-on-surface"></div>
+</div>
+</div>
+<div class="absolute top-4 right-4 bg-surface-container-highest/80 backdrop-blur px-3 py-2 rounded-lg border border-primary-fixed/20">
+<div class="font-label-sm text-label-sm text-primary-fixed">+ $5.420 (Últimos 30d)</div>
+</div>
+</div>
+<div class="mt-6 flex justify-between font-label-sm text-label-sm text-on-surface-variant uppercase">
+<span>JAN 24</span>
+<span>FEV 24</span>
+<span>MAR 24</span>
+<span>ABR 24</span>
+<span>MAI 24</span>
+<span>JUN 24</span>
+</div>
+</div>
+<!-- Provenance -->
+<div class="glass-panel rounded-2xl p-8 h-full">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="history">history</span> Proveniência
+                        </h3>
+<div class="space-y-6 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-outline-variant/30">
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-primary-fixed border-4 border-surface-container flex items-center justify-center"></div>
+<div class="font-label-md text-label-md text-on-surface">Adquirido por VaultMaster_X</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">12 de Junho, 2024</div>
+<div class="text-[12px] text-primary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="link">link</span> Transação #A98F...21
+                                </div>
+</div>
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-highest border-4 border-surface-container flex items-center justify-center"></div>
+<div class="font-label-md text-label-md text-on-surface">Trocado de NeoCollectors</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">04 de Março, 2023</div>
+<div class="text-[12px] text-on-surface-variant/60">Valor: 41.000 TRD</div>
+</div>
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-highest border-4 border-surface-container flex items-center justify-center"></div>
+<div class="font-label-md text-label-md text-on-surface">Certificação Emitida pela PSA</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">18 de Novembro, 2022</div>
+<div class="text-[12px] text-on-surface-variant/60">Cert #74920038</div>
+</div>
+<div class="relative pl-8 group">
+<div class="absolute left-0 top-1 w-6 h-6 rounded-full bg-surface-container-highest border-4 border-surface-container flex items-center justify-center"></div>
+<div class="font-label-md text-label-md text-on-surface">Ativo Cunhado / Obtido</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Lançamento Original de 2005</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full mt-auto px-6 md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4 py-8 border-t border-outline-variant/10 bg-surface-container-lowest">
+<span class="font-label-md text-label-md text-primary-fixed-dim">PLATAFORMA TRADES</span>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Central de Ajuda</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Comunidade</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Status do Sistema</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Termos de Serviço</a>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-80">© 2024 PLATAFORMA TRADES. TODOS OS DIREITOS RESERVADOS.</span>
+</footer>
+<script>
+        // Atmospheric effect: Light sweep on interaction
+        document.addEventListener('mousemove', (e) => {
+            const holo = document.querySelector('.holo-glow');
+            if (holo) {
+                const rect = holo.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    holo.style.setProperty('--x', `${x}px`);
+                    holo.style.setProperty('--y', `${y}px`);
+                }
+            }
+        });
+        console.log("UI Initialized: Asset Detail Page Loaded");
+    </script>
+</body></html>

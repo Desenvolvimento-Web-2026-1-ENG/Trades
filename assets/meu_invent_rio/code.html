@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TRADES | Meu Inventário</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Sora:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error-container": "#ffdad6",
+                    "surface-container-lowest": "#070e1a",
+                    "secondary": "#aec6ff",
+                    "inverse-primary": "#00696f",
+                    "outline-variant": "#3a494b",
+                    "on-surface": "#dbe3f4",
+                    "surface-dim": "#0c1420",
+                    "primary-fixed": "#74f5ff",
+                    "on-tertiary-fixed-variant": "#5700c9",
+                    "tertiary-fixed": "#e9ddff",
+                    "surface-bright": "#323947",
+                    "on-surface-variant": "#b9cacb",
+                    "on-primary-fixed": "#002022",
+                    "on-primary": "#00363a",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-tint": "#00dbe7",
+                    "error": "#ffb4ab",
+                    "primary-fixed-dim": "#00dbe7",
+                    "surface-container-high": "#232a37",
+                    "on-secondary-fixed": "#001a42",
+                    "surface-container-highest": "#2d3542",
+                    "surface-variant": "#2d3542",
+                    "surface-container": "#18202c",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#004396",
+                    "on-tertiary-container": "#7318ff",
+                    "secondary-fixed": "#d8e2ff",
+                    "primary-container": "#00f2ff",
+                    "inverse-on-surface": "#29313e",
+                    "on-tertiary": "#3c0090",
+                    "on-background": "#dbe3f4",
+                    "on-error": "#690005",
+                    "background": "#0c1420",
+                    "secondary-container": "#4f8eff",
+                    "surface": "#0c1420",
+                    "inverse-surface": "#dbe3f4",
+                    "surface-container-low": "#141c28",
+                    "tertiary": "#fcf5ff",
+                    "tertiary-fixed-dim": "#d1bcff",
+                    "on-secondary-container": "#00275e",
+                    "tertiary-container": "#e3d4ff",
+                    "primary": "#e1fdff",
+                    "on-primary-container": "#006a71",
+                    "on-secondary": "#002e6a",
+                    "outline": "#849495",
+                    "on-tertiary-fixed": "#23005b",
+                    "secondary-fixed-dim": "#aec6ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "gutter": "24px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-xl-mobile": ["Sora"],
+                    "headline-md": ["Sora"],
+                    "headline-lg": ["Sora"],
+                    "label-md": ["JetBrains Mono"],
+                    "headline-sm": ["Sora"],
+                    "body-sm": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-xl": ["Sora"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background: radial-gradient(circle at 50% 0%, #141c28 0%, #0c1420 100%);
+            color: #dbe3f4;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(24, 32, 44, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+        }
+        .neo-glow {
+            box-shadow: 0 0 15px rgba(0, 219, 231, 0.2);
+            border: 1px solid rgba(0, 219, 231, 0.3);
+        }
+        .neo-glow-active {
+            box-shadow: 0 0 20px rgba(0, 219, 231, 0.5);
+            border: 1px solid #00dbe7;
+        }
+        .holographic-sweep {
+            position: relative;
+            overflow: hidden;
+        }
+        .holographic-sweep::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 45%,
+                rgba(116, 245, 255, 0.1) 50%,
+                transparent 55%
+            );
+            transform: rotate(25deg);
+            transition: transform 0.5s;
+            pointer-events: none;
+        }
+        .holographic-sweep:hover::after {
+            transform: translate(30%, 30%) rotate(25deg);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(116, 245, 255, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-body-md">
+<!-- TopNavBar -->
+<nav class="flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50 bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-8">
+<img alt="TRADES Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2qYl2Lze96O_E8E73jPDRsxaA8XW7yPGdXsydDNtvlv-oggIDpgVDXQZ8ITZBTkLP05rThSGhmXrIm9HXVlRyAZ4pXLUOOA2zNlCEc4PQ5UV3bculVIumJCJ1wXa4xtWJ781BPsIih9CVC7fx0tevN3aZNXWGr8tQXJ0DUW997DS741D9K40A4fzJTRoE02e57T3Ok1Bq1xulswv5XPjh76DQWXHVeV0tHdB0wIt06zIuh0OssgfRA9Q-I8OtafRgmY1an9zzRC25"/>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-all duration-200 font-label-md text-label-md uppercase tracking-wider" href="#">Mercado</a>
+<a class="text-primary-fixed border-b-2 border-primary-fixed font-label-md text-label-md uppercase tracking-wider h-16 flex items-center" href="#">Inventário</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-200 font-label-md text-label-md uppercase tracking-wider" href="#">Social</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-all text-primary-fixed">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-all text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-primary-fixed/30 overflow-hidden">
+<img alt="Avatar do Usuário" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5RkTaASjGmjL0x2En1MetAAku5TlBT4oPgxsRxThqHPR4uDlYpDbE7Hx6HBCxRtP_uQZa51CzDTUNXIh8FcFzbuF7dohIjqOCRkfB6UcGpySvEisQdtIjIgrPfFCQyQzjrrLQVFk9rrfs7kf6gMkJ9LSOWoVGJ_u1-rjhTzb4oxbshESg0G26m7WA-N4qDF0uBHOGSIUwGGLWqJGaEt76LIuF7NSJMLteu3LXjZec05Rg23QRqNt6qhT3-YWSiP3qmqjrn46dgewY"/>
+</div>
+</div>
+</nav>
+<div class="flex min-h-[calc(100vh-64px)]">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col z-40 bg-surface-container-low/50 backdrop-blur-2xl border-r border-outline-variant/30 shadow-2xl hidden md:flex">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-12 h-12 rounded-lg bg-primary-container/20 flex items-center justify-center border border-primary-fixed/20">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary-fixed leading-none">Pro Trader</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Nível 42</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                    </a>
+<a class="bg-secondary-container/20 text-primary-fixed border-l-4 border-primary-fixed px-4 py-3 flex items-center gap-3 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span> Meu Inventário
+                    </a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">search</span> Explorar Trocas
+                    </a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">swap_horiz</span> Propostas Ativas
+                    </a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest/40 hover:text-primary transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">settings</span> Configurações
+                    </a>
+</nav>
+<button class="w-full mt-8 bg-gradient-to-r from-primary-fixed-dim to-secondary-container py-3 rounded-lg font-headline-sm text-headline-sm text-on-primary-fixed flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-[0_0_20px_rgba(0,219,231,0.3)]">
+<span class="material-symbols-outlined">add_circle</span> Nova Proposta
+                </button>
+</div>
+<div class="mt-auto p-6 border-t border-outline-variant/10">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:text-primary-fixed transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">help</span> Ajuda
+                </a>
+<a class="text-error px-4 py-3 flex items-center gap-3 hover:opacity-80 transition-opacity font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">logout</span> Sair
+                </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 p-6 md:p-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary-fixed mb-2">Meu Inventário</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Gerencie e exiba sua coleção de ativos digitais.</p>
+</div>
+<div class="flex gap-4 w-full md:w-auto">
+<button class="flex-1 md:flex-none px-6 py-3 glass-panel rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-highest/40 transition-colors border border-primary-fixed/20">
+<span class="material-symbols-outlined">filter_list</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Filtros Avançados</span>
+</button>
+<button class="flex-1 md:flex-none px-6 py-3 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center gap-2 active:scale-95 transition-transform neo-glow-active">
+<span class="material-symbols-outlined">add</span>
+<span class="font-label-md text-label-md uppercase tracking-wider">Adicionar Novo Item</span>
+</button>
+</div>
+</div>
+<!-- Bento Categories -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<button class="glass-panel p-6 rounded-xl border-l-4 border-primary-fixed hover:bg-surface-container/30 transition-all text-left">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-4xl text-primary-fixed" style="font-variation-settings: 'FILL' 1;">style</span>
+<span class="font-label-md text-label-md text-on-surface-variant">1.240 ITENS</span>
+</div>
+<p class="font-headline-md text-headline-md text-primary-fixed">Cartas</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Trading &amp; CCG</p>
+</button>
+<button class="glass-panel p-6 rounded-xl border-l-4 border-on-secondary-fixed-variant hover:bg-surface-container/30 transition-all text-left">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-4xl text-secondary" style="font-variation-settings: 'FILL' 1;">monetization_on</span>
+<span class="font-label-md text-label-md text-on-surface-variant">85 ITENS</span>
+</div>
+<p class="font-headline-md text-headline-md text-secondary">Moedas</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Numismática</p>
+</button>
+<button class="glass-panel p-6 rounded-xl border-l-4 border-tertiary-fixed-dim hover:bg-surface-container/30 transition-all text-left">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-4xl text-tertiary-fixed-dim" style="font-variation-settings: 'FILL' 1;">token</span>
+<span class="font-label-md text-label-md text-on-surface-variant">312 ITENS</span>
+</div>
+<p class="font-headline-md text-headline-md text-tertiary-fixed-dim">Selos</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mt-1">Filatelia</p>
+</button>
+</div>
+<!-- Inventory Grid & Filters -->
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Sidebar Filters -->
+<aside class="w-full lg:w-64 space-y-8 shrink-0">
+<div class="space-y-4">
+<h3 class="font-label-md text-label-md text-primary-fixed uppercase tracking-widest border-b border-outline-variant/30 pb-2">Raridade</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded bg-surface-container-high border-outline-variant text-primary-fixed focus:ring-primary-fixed/50" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Mítico (12)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded bg-surface-container-high border-outline-variant text-primary-fixed focus:ring-primary-fixed/50" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Lendário (45)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded bg-surface-container-high border-outline-variant text-primary-fixed focus:ring-primary-fixed/50" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Épico (128)</span>
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="font-label-md text-label-md text-primary-fixed uppercase tracking-widest border-b border-outline-variant/30 pb-2">Era</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-full bg-surface-container-high border-outline-variant text-primary-fixed focus:ring-primary-fixed/50" name="era" type="radio"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Moderno (2020+)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded-full bg-surface-container-high border-outline-variant text-primary-fixed focus:ring-primary-fixed/50" name="era" type="radio"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Dourado (1990-2010)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-full bg-surface-container-high border-outline-variant text-primary-fixed focus:ring-primary-fixed/50" name="era" type="radio"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Vintage (&lt;1990)</span>
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="font-label-md text-label-md text-primary-fixed uppercase tracking-widest border-b border-outline-variant/30 pb-2">Condição</h3>
+<input class="w-full accent-primary-fixed h-1.5 bg-surface-container-high rounded-lg appearance-none cursor-pointer" type="range"/>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span>RUIM</span>
+<span>MINT 10</span>
+</div>
+</div>
+</aside>
+<!-- Cards Grid -->
+<div class="flex-1 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Item Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden group holographic-sweep neo-glow cursor-pointer transition-all duration-300 hover:-translate-y-2">
+<div class="relative aspect-[3/4] scanline overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Uma carta rara holográfica de um titã robótico em uma cidade cyberpunk. A superfície tem acabamento prismático com circuitos de energia azul brilhantes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApzdX4qV2qtJN6O6_u5_i49gpHWnLXUYvoJSVqks8AbmXCktCwDYU0EUTuLNTvDLYFaFEL1XA4eg5--BYLp1vlj5x1v82TjiTc9-6D80p69WBQbcGvYzMYkyJ6Pg-HwZ9laEZiqhSX02DaUt323U7eFAg1dcD51b02NZeSxdwLbJsZWg_zYLVHOQJBcR7qHFn5GAjwD72KB879SLUR7-T5hsFkXWVUIgu6xmng3e2lglSTaISyry-Ayh2AKgmhk928UElhquKXSHCP"/>
+<div class="absolute top-3 left-3 bg-surface-container-highest/80 backdrop-blur-md px-2 py-1 rounded border border-primary-fixed/30">
+<span class="font-label-sm text-label-sm text-primary-fixed uppercase">Mítico</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-md text-label-md neo-glow-active">
+                                PSA 10
+                            </div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">Cyber-Dragon Prime</h4>
+<div class="flex justify-between items-center mt-2">
+<span class="font-label-md text-label-md text-primary-fixed-dim">#001/500</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">EST. $4,250.00</span>
+</div>
+</div>
+</div>
+<!-- Item Card 2 -->
+<div class="glass-panel rounded-xl overflow-hidden group holographic-sweep neo-glow cursor-pointer transition-all duration-300 hover:-translate-y-2">
+<div class="relative aspect-[3/4] scanline overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Macro de uma moeda de ouro edição limitada. Apresenta gravura detalhada de águia sob luz de estúdio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqCaEnMN-PIZ91O9Rv8vx89dcNvacK2GbfQ6pSMYfThBk8BW5HQ0kTaEpKiB3AXrcyLtD4p1VE4I-ZRtS7S8KAE31wsBifYIh5fv5nBnNA6dVHWgRyyWqIC-LXBhpmTkRr-AVS8xICWl8i6NCnZNVt5JRXVo1ij5_bV_2wAYAghcM-68HPGOF6NXSNtaE5_PzTO-PYX6zvsqnu1iMLacxWJiXTYPI4HGrkWCEajDe6mxMcl6HNSqzcbPdqhyBlymXWTJsm147cBG-K"/>
+<div class="absolute top-3 left-3 bg-surface-container-highest/80 backdrop-blur-md px-2 py-1 rounded border border-secondary/30">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Lendário</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md">
+                                MINT 9.5
+                            </div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">Apollo Gold Sovereign</h4>
+<div class="flex justify-between items-center mt-2">
+<span class="font-label-md text-label-md text-on-secondary-fixed">CUNHAGEM RARA</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">EST. $1,800.00</span>
+</div>
+</div>
+</div>
+<!-- Item Card 3 -->
+<div class="glass-panel rounded-xl overflow-hidden group holographic-sweep neo-glow cursor-pointer transition-all duration-300 hover:-translate-y-2">
+<div class="relative aspect-[3/4] scanline overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Selo filatélico ultra-raro com gravura de aviador antigo e biplano. Bordas serrilhadas envelhecidas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4RZ1tQ_lh3fz9R74BzDc_EPJjtIg12kMtoaVBYhXUfyUXo_K3FdUkFwA5MojXmk2WechL5Gz0NCG-srMst_nxh-fEH8cVLhRppg762w8HWNxmkaHDE959HmEuaJDFsR4c8MafCCR_bsdPvJr11MZmy98GleHoKFGuxgufhXQRyhDzJdIfAD9XB1Hyi2ZhEeQOx0g1dLf1Euw7BmrQOYqTW4izVXo7SM9nfgSB18eth5-PRWBvOX2i1nPw0EIhwWGWn8E7MhB2i9Xi"/>
+<div class="absolute top-3 left-3 bg-surface-container-highest/80 backdrop-blur-md px-2 py-1 rounded border border-tertiary-fixed-dim/30">
+<span class="font-label-sm text-label-sm text-tertiary-fixed-dim uppercase">Épico</span>
+</div>
+<div class="absolute bottom-3 right-3 bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full font-label-md text-label-md">
+                                GEMS 10
+                            </div>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<h4 class="font-headline-sm text-headline-sm text-on-surface truncate">First Flight Commemorative</h4>
+<div class="flex justify-between items-center mt-2">
+<span class="font-label-md text-label-md text-tertiary-fixed-dim">ORIGEM 1924</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">EST. $640.00</span>
+</div>
+</div>
+</div>
+<!-- Item Card 4 (Placeholder) -->
+<div class="glass-panel rounded-xl overflow-hidden group neo-glow flex flex-col items-center justify-center aspect-[3/4] bg-surface-container-low/20 border-dashed border-2 border-outline-variant/30 hover:border-primary-fixed/50 transition-colors">
+<span class="material-symbols-outlined text-6xl text-outline-variant group-hover:text-primary-fixed transition-colors">add_photo_alternate</span>
+<p class="font-label-md text-label-md text-outline-variant group-hover:text-primary-fixed mt-4">ADICIONAR À COLEÇÃO</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full mt-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4 py-8 border-t border-outline-variant/20 bg-surface-container-lowest">
+<span class="font-label-md text-label-md text-primary-fixed-dim">PLATAFORMA TRADES</span>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Centro de Ajuda</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Comunidade</a>
+<a class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">Termos de Serviço</a>
+</div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant">© 2024 PLATAFORMA TRADES. TODOS OS DIREITOS RESERVADOS.</p>
+</footer>
+<!-- Interactive Atmospheric Layer -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20">
+<div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary-fixed rounded-full blur-[150px] opacity-10"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-secondary-container rounded-full blur-[150px] opacity-10"></div>
+</div>
+<script>
+        document.querySelectorAll('.holographic-sweep').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transaction History | TRADES NEON SYNDICATE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#2d3542",
+                        "on-surface": "#dbe3f4",
+                        "inverse-primary": "#00696f",
+                        "surface-bright": "#323947",
+                        "secondary-fixed": "#d8e2ff",
+                        "outline": "#849495",
+                        "on-primary-fixed": "#002022",
+                        "secondary": "#aec6ff",
+                        "primary-fixed": "#74f5ff",
+                        "primary-fixed-dim": "#00dbe7",
+                        "on-background": "#dbe3f4",
+                        "inverse-on-surface": "#29313e",
+                        "surface-container-high": "#232a37",
+                        "surface-tint": "#00dbe7",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#3c0090",
+                        "surface-container": "#18202c",
+                        "background": "#0c1420",
+                        "tertiary": "#fcf5ff",
+                        "primary-container": "#00f2ff",
+                        "primary": "#e1fdff",
+                        "tertiary-container": "#e3d4ff",
+                        "on-secondary-container": "#00275e",
+                        "on-primary": "#00363a",
+                        "tertiary-fixed-dim": "#d1bcff",
+                        "on-tertiary-fixed": "#23005b",
+                        "on-tertiary-container": "#7318ff",
+                        "secondary-fixed-dim": "#aec6ff",
+                        "secondary-container": "#4f8eff",
+                        "outline-variant": "#3a494b",
+                        "on-secondary": "#002e6a",
+                        "surface-dim": "#0c1420",
+                        "surface": "#0c1420",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-container-highest": "#2d3542",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e9ddff",
+                        "inverse-surface": "#dbe3f4",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#070e1a",
+                        "surface-container-low": "#141c28",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed-variant": "#5700c9",
+                        "on-primary-container": "#006a71",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#004396",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-xl-mobile": ["Sora"],
+                        "body-md": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Sora"],
+                        "headline-xl": ["Sora"]
+                    },
+                    "fontSize": {
+                        "headline-xl-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0c1420;
+            color: #dbe3f4;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(45, 53, 66, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+        }
+        .neon-border-primary {
+            border-color: rgba(0, 219, 231, 0.4);
+            box-shadow: 0 0 15px rgba(0, 219, 231, 0.15);
+        }
+        .glow-cyan {
+            text-shadow: 0 0 8px rgba(0, 219, 231, 0.6);
+        }
+        .pulse-cyan {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md bg-background">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,219,231,0.1)]">
+<div class="flex justify-between items-center px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<img alt="TRADES Logo" class="h-10 w-10" src="https://lh3.googleusercontent.com/aida/ADBb0ugFjqTkfOsYWowO8pDKETir9iD0JrFIi63z6ueHd9lnPX7BXfOMG8qwAizUIpmqLzQglAZDO1GfuTOuZ5_MF6GtNAv7oiT-ZaAXyXSdhOStcqeHWt_vpio-iuWxlkh-9P_YaASa8gPz57n5Gg36v3kDtUOXinMFY5Ligf_DgocQ5TjWmXUoSvABUkoux0bFx5R9WlXQ7FpD_m8N1Wdzf7UpCCIXKpt2t0tVIh4qpFJp3qWBupeQYxDRyIxH"/>
+<span class="font-headline-md text-headline-md font-extrabold tracking-tighter text-primary dark:text-primary drop-shadow-[0_0_8px_rgba(225,253,255,0.5)]">TRADES</span>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed-dim transition-colors duration-200" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed-dim transition-colors duration-200" href="#">Market</a>
+<a class="text-primary-fixed font-bold border-b-2 border-primary-fixed" href="#">History</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-primary hover:text-primary-fixed-dim active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="p-2 text-primary hover:text-primary-fixed-dim active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full border border-primary-fixed/30 p-0.5 overflow-hidden">
+<img alt="User profile" class="h-full w-full object-cover rounded-full" data-alt="A futuristic close-up portrait of a high-tech trader with sleek neon eyewear reflecting data streams. The background is a dark, atmospheric digital vault with soft cyan ambient light. The style is ultra-high-fidelity and professional, maintaining the Syndicate brand aesthetic with deep shadows and sharp highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCcgxkCgxxLbr2U6KmJzFHQPNNosin5BDrIWPD0kH5Mdh6f6PGF7h6UNTDEebLSf3qH07LEL2GRGsvFzZcYE3kBYPoPvSog1WuSbH0PYOyPH4BdKlPzgTeYYymb4vHeM75zivjVE4A3TkTpgca2W4MHdOuL4RsvEONaF3AACXczFALRkK-hCJ-43p1MbANI_zD7icp543H4VUAKkZr8CMdHILso6q4-33kuZd60_fDs_MBY15if7RZqQ8l9zDl2Blyyy7x1pxv0PN-"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNav Shell (Desktop Only) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-64 z-40 flex-col pt-20 pb-8 bg-surface-container dark:bg-surface-container backdrop-blur-2xl border-r border-outline-variant/20 shadow-2xl">
+<div class="px-6 mb-8">
+<h2 class="font-headline-sm text-headline-sm text-primary">Neon Syndicate</h2>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mt-1">Elite Trader</p>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<a class="text-on-surface-variant hover:bg-primary-container/5 hover:text-primary transition-all px-6 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant hover:bg-primary-container/5 hover:text-primary transition-all px-6 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="text-on-surface-variant hover:bg-primary-container/5 hover:text-primary transition-all px-6 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-label-md text-label-md">Market</span>
+</a>
+<a class="text-primary bg-primary-container/10 border-r-4 border-primary-fixed px-6 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="font-label-md text-label-md">Proposals</span>
+</a>
+<a class="text-on-surface-variant hover:bg-primary-container/5 hover:text-primary transition-all px-6 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 bg-gradient-to-r from-primary-fixed-dim to-primary-container text-on-primary-fixed font-bold rounded-lg active:scale-[0.98] transition-transform">
+                MINT NEW ASSET
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-16 px-margin-mobile md:pl-72 md:pr-margin-desktop min-h-screen">
+<!-- Header & Summary Cards (Bento Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-8">
+<div class="md:col-span-4 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-4">
+<div>
+<h1 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-primary drop-shadow-sm">Histórico de Transações</h1>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Audit log of your elite trade network activities.</p>
+</div>
+<button class="flex items-center gap-2 px-6 py-2.5 glass-panel rounded-lg text-primary hover:bg-primary-container/10 transition-all border border-primary/20 active:scale-95">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+<span class="font-label-md text-label-md">EXPORT DATA</span>
+</button>
+</div>
+<!-- Summary Card 1: Success Rate -->
+<div class="glass-panel p-6 rounded-xl border-l-4 border-primary-fixed shadow-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl" data-icon="trending_up">trending_up</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-2">Success Rate</p>
+<h3 class="font-headline-lg text-headline-lg text-primary-fixed glow-cyan">94.2%</h3>
+<p class="text-body-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_upward">arrow_upward</span>
+                    2.1% from last month
+                </p>
+</div>
+<!-- Summary Card 2: Total Trades -->
+<div class="glass-panel p-6 rounded-xl border-l-4 border-secondary shadow-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl" data-icon="swap_horiz">swap_horiz</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-2">Total Trades</p>
+<h3 class="font-headline-lg text-headline-lg text-secondary">1,284</h3>
+<p class="text-body-sm text-on-surface-variant mt-2">Lifetime transactions</p>
+</div>
+<!-- Summary Card 3: Net Value Gain -->
+<div class="md:col-span-2 glass-panel p-6 rounded-xl border-l-4 border-primary-container shadow-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-2">Net Value Gain</p>
+<h3 class="font-headline-lg text-headline-lg text-primary-container glow-cyan">+ 42.85 ETH</h3>
+<p class="text-body-sm text-on-surface-variant mt-2">Estimated market value increase</p>
+</div>
+<div class="h-16 w-32 hidden lg:block">
+<!-- Tiny Sparkline Mockup -->
+<div class="flex items-end gap-1 h-full">
+<div class="bg-primary/20 w-3 h-[40%] rounded-t-sm"></div>
+<div class="bg-primary/40 w-3 h-[60%] rounded-t-sm"></div>
+<div class="bg-primary/60 w-3 h-[50%] rounded-t-sm"></div>
+<div class="bg-primary/80 w-3 h-[80%] rounded-t-sm"></div>
+<div class="bg-primary-container w-3 h-[100%] rounded-t-sm shadow-[0_0_10px_rgba(0,242,255,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="mb-6 flex gap-2 overflow-x-auto scrollbar-hide">
+<button class="px-6 py-2 rounded-full font-label-md text-label-md bg-primary-container/20 text-primary-fixed border border-primary-fixed/50 whitespace-nowrap">All</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant/50 transition-all whitespace-nowrap">Completed</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant/50 transition-all whitespace-nowrap">Pending</button>
+<button class="px-6 py-2 rounded-full font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant/50 transition-all whitespace-nowrap">Cancelled</button>
+</div>
+<!-- Transaction Table -->
+<div class="glass-panel rounded-xl overflow-hidden border border-outline-variant/10 shadow-2xl">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-highest/50 border-b border-outline-variant/30">
+<tr>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-widest">Date / ID</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-widest">Items Exchanged</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-widest">Trade Partner</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-outline uppercase tracking-widest text-right">Value Delta</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-variant/20 transition-colors group">
+<td class="px-6 py-5">
+<div class="font-label-md text-label-md text-on-surface">Oct 24, 2024</div>
+<div class="text-[10px] font-mono text-outline mt-1 uppercase tracking-tighter">TX-882199-B</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center -space-x-2">
+<div class="h-10 w-10 rounded border border-primary-fixed/20 bg-surface-container flex items-center justify-center hover:z-10 hover:-translate-y-1 transition-transform cursor-pointer overflow-hidden">
+<img alt="Asset 1" class="w-full h-full object-cover" data-alt="A macro photography shot of a rare, holographic trading card featuring a cybernetic creature. The card glows with iridescent cyan and purple hues. The background is a dark, tech-oriented studio setting with shallow depth of field. High-resolution textures and vibrant neon reflections characterize the elite aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBidb2QvWqlYVi2wIzuti2pLsgyHOR6xBzehju_w-kP7rtzxgftfMcuzkoAbmf6s_WTRc9d1jOie7IBxwrToorJBFmhDCwcXzoFVqeGIA-pdKEilVOJmcfK7l4-_-yC41ggAXru8mPwWJ1uincTlVH2EvJPQEzND2NpGd6fv7o16YyKOmry_aXXE4eQKWBDM899lcB4FqDKetny_HatvzrqGMpny8zMTZeYDw6ebfLqgIcbnoyHCH9WYQj3uSMC2lbIzcKG9EN8m2vv"/>
+</div>
+<div class="h-10 w-10 rounded border border-secondary/20 bg-surface-container flex items-center justify-center hover:z-10 hover:-translate-y-1 transition-transform cursor-pointer overflow-hidden">
+<img alt="Asset 2" class="w-full h-full object-cover" data-alt="A detailed digital artwork of a futuristic mechanical component, encased in a sleek metallic frame with glowing circuitry patterns. The object emits a soft blue light against a deep navy background. The style is sharp, geometric, and professional, evoking a sense of high-value digital asset rarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJAWfB0cMWv-SYkFKKgYUfGbdylkO9bfq-D2AfXlr_hG5eFsO-IbwojXZOt_dAamvcDlO_lf1VQTP-AQ1doSHydWOjWLGzmA0lPlD7v6cKc6kncLLyatK0G8hzvxAEb8WFVAGjNeMA5kaMW6Kbsum2Qr402eCTsJoSnW8DfKAyijz4pwlNcSWgUXGPUUv417oieR04LxL7bqZA16w2tORw23Z8nVh0m7FKXY4yL3uSn4cFc2fNNr1KsZUU4aEJGri2aASYMe4IYDaE"/>
+</div>
+<div class="h-10 w-10 rounded-full bg-surface-variant flex items-center justify-center text-[10px] font-bold text-on-surface-variant border border-outline-variant/30">+2</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img alt="Partner" class="h-8 w-8 rounded-full object-cover border border-outline-variant" data-alt="A professional headshot of a sophisticated male user in a high-tech environment. He wears a sleek, dark tech-wear jacket with subtle glowing blue accents. The lighting is moody and cinematic, with soft rim light highlighting his silhouette against a dark, blurred background of digital monitors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9-Jv4BaDArnCrRJbMw2lDAdVHh9rhzPL4t00q2Up00ZfndHYHb-hrxGLXRbI0Aa7qAvro49Xjd-ql8KNHQr4lmxuZAn7i3VoYIDzippTSiOImbldP7IIdQbUlm__owOIVpe3BPTKZtdw-1hPFiyz2Bhj7nmBWmbcFYNUoghbjkutRB43vMg47nHENuOgW-O_DNwY-w9j54QPbmbQIO9NEJV-k-Exbf4xGykvAetNDi0lifUsrDP-gjxWBJ41ESNjjD8PqwyWw4Pk0"/>
+<span class="font-body-sm text-body-sm text-on-surface">Cipher_Zero</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest bg-primary-container/10 text-primary-fixed border border-primary-fixed/40 uppercase shadow-[0_0_10px_rgba(0,219,231,0.1)]">Completed</span>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="font-label-md text-label-md text-primary-fixed-dim">+ 1.24 ETH</span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-5">
+<div class="font-label-md text-label-md text-on-surface">Oct 23, 2024</div>
+<div class="text-[10px] font-mono text-outline mt-1 uppercase tracking-tighter">TX-882145-A</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center">
+<div class="h-10 w-10 rounded border border-secondary/20 bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="Asset 3" class="w-full h-full object-cover" data-alt="A high-fidelity 3D rendering of a vintage-style console reimagined as a futuristic data core. The object features polished chrome surfaces and glowing turquoise ventilation grilles. Set in a dark, minimalist digital space with soft ambient occlusion, creating a professional and high-stakes collector aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxEDrb3d_8gJOGDYrySgfwR86sJB35IW6ejD_Wk6t1CHPaql9sr2S9p6sEPRRktF0fCMtyXEgr0_Z2AgR91me5G99peFUZnIrewDBdzbgxk78vPcq-OXK-LQLOuUPbdWz3DoG3A8hfxs40V2A1fKzFRi7cTSJsEW9fk_jC0uercTgTWdJJEoKun7ki_zGNAmTeWrH1pLmv0iS9pGoJeZ88iuReRrO8GgqrDoCvYyG2K04l4wzcE-0jWG7qCklfGIe_sOckVHbYq_HI"/>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img alt="Partner" class="h-8 w-8 rounded-full object-cover border border-outline-variant" data-alt="A stylized portrait of a female digital architect with subtle neon facial markings that glow in a soft lavender light. She is wearing high-end futuristic apparel. The environment is a deep, dark studio with reflective surfaces and sharp, professional lighting that emphasizes a high-tech persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8zbGJxUYVy2doDQIHEkmMx85HIWs9FbZSVehXzIznwnoxn22GLD78nH7k9mNwzeQQ1PyLuaIaqpd9cMC7f3VYis13qbOdF1qJ8UvaDF00bQ3AdL_jc8Ag6CGa-liebMaigDov3ScSD-y5bKlYCm9jzEOsJsZ1_ENaC-U47TWFvpY_J4ca7kW5CY9F8sm_WtB6ej9owBKwhCEwi9Cr6sGQUtobSZHKREVJGn6ySX3vXrkFQa1trA_DCc9NneX-jJU3NyrtSFXd0x1Y"/>
+<span class="font-body-sm text-body-sm text-on-surface">Neon_Architect</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="h-2 w-2 rounded-full bg-primary pulse-cyan"></div>
+<span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest text-primary-fixed border border-primary-fixed/20 uppercase">Pending</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="font-label-md text-label-md text-on-surface">--</span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-5">
+<div class="font-label-md text-label-md text-on-surface">Oct 21, 2024</div>
+<div class="text-[10px] font-mono text-outline mt-1 uppercase tracking-tighter">TX-882001-Z</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center -space-x-2">
+<div class="h-10 w-10 rounded border border-error/20 bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="Asset 4" class="w-full h-full object-cover" data-alt="A stunning digital abstract representing a corrupted data packet, with jagged red and black geometric fragments and glitch effects. The background is a stark, high-contrast dark space with subtle atmospheric dust. The visual style is aggressive yet technical, perfectly fitting a high-octane trading platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd98pEiNeiYpFAAdPy2OxUF-RiR2ayVjGCdaahHz6Ix1ffKhsoxS8lsl0NKBaMUasc9OJxgWP7xFuJWKZ1-yBb9j0rNRSX3J80pH2UR1VMJo2Gho0y-Z5SYdCzuKrgSOg38UsvUMrHyYe5HzfuTKm-GLFqXnwtnoB2YnJg0_vFsFky6HguJUZb2vcnE6IV-9G2Gn64CLoXSjCjDQVI_GxBg8p7D1IMDIp1pXn28T73MMFE32o3biw67E6eIxrgbUGrisDPKyeS12Nz"/>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="person">person</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface">System_Protocol</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest bg-error-container/20 text-error border border-error/40 uppercase">Cancelled</span>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="font-label-md text-label-md text-error">- 0.05 ETH</span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-5">
+<div class="font-label-md text-label-md text-on-surface">Oct 19, 2024</div>
+<div class="text-[10px] font-mono text-outline mt-1 uppercase tracking-tighter">TX-881944-F</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center -space-x-2">
+<div class="h-10 w-10 rounded border border-primary-fixed/20 bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="Asset 5" class="w-full h-full object-cover" data-alt="A minimalist, high-tech 3D design of a sleek, floating gemstone with inner glowing facets of deep blue and cyan. The object is suspended in a dark, sterile digital environment with soft, professional rim lighting. The aesthetic is extremely polished and high-fidelity, signaling high value and rarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtSP2ZsCniNoecHH2I9WXUCg3LOVqPuhhHXbHYsXVO4e6kF3NC__qJWKXxQh4_AInWiwMqfvmu1LDJ-c1DodcyDEdJA49zsGMHxR0SceSZTTxHqwkgKXCgd77IJvO2JetXCPxk6qMzAZzRJoEqOEEz6ldk4PLFNF1XNc5kcEwQAy-Udel8ymrLjahF7hreiEvwGytcZDfFaEnWiYtgpY3jsNFLgq1yhSaHwpNMhPshA8qZ8bkjjAAIiBk1GJGK4qnsjtT159zNIh3v"/>
+</div>
+<div class="h-10 w-10 rounded border border-primary-fixed/20 bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="Asset 6" class="w-full h-full object-cover" data-alt="A close-up of a digital artifact that resembles a microscopic circuitry map, glowing with intense cyan energy lines against a deep black silicon base. The style is technical and advanced, using a palette of dark navies and vibrant neon blues to represent professional-grade trading assets." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPi4PsFdyxPmLsKvG1hH-eHWXPPyfe9tLfIR7sIZzBWKIxNj91ZLlxqTgoiRiXTlRrpnxgkc4QmkSjWRrG76yW2dIGV5mRjMTeq9un-jePY3_w6xMk2-CXvc-9FpnnmkEkqyWhCy_fHWepsf9utWM-f6T-Q1VRYiW82u6cs7B-1K5gFZzWGev5R8RoTu9ojDqHujyzBnOKZPipMt-kdFw2CNXw828ScE9B6whctmY6RPFBoppa0LZ6uDJITeZbxOjyD7I69-HKaIiN"/>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img alt="Partner" class="h-8 w-8 rounded-full object-cover border border-outline-variant" data-alt="A portrait of a male data broker with a sharp, clean-cut look and a subtle augmented reality interface projected near his eyes. He is in a dark, high-contrast control room with glowing blue interface panels. The overall look is professional, elite, and deeply integrated with the design system's tech-noir theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM4Ai9lzDsUP3Q2PocaQi-hFFoXgKs7hspKfy-RnySNe-fcsQ-cQ-ykLDoL1ZXyEwr04Hp8hCgHa3mz8dePRSqzylByZyx0FzPJcpNF71YoZzGfZh7kXiAkonEf4-qJeyDUm9V4c0LvhbPDxfiuU34HZn0CmJfrZS-xksigALDNDhE9KSyMBZ2AlW6PBqm_WkniKzoAkzhcG1cT--6Is7Ka6YcVgd6pQiWBJXXYdmFYLU0Gyw1E3mEr6viMjuJQX2P3oALzAtbqzvl"/>
+<span class="font-body-sm text-body-sm text-on-surface">Quantum_Vanguard</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest bg-primary-container/10 text-primary-fixed border border-primary-fixed/40 uppercase">Completed</span>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="font-label-md text-label-md text-primary-fixed-dim">+ 8.50 ETH</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-high/30 border-t border-outline-variant/20 flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-outline">Showing 1-10 of 1,284 transactions</span>
+<div class="flex gap-2">
+<button class="p-2 rounded border border-outline-variant/30 hover:bg-surface-variant transition-all text-on-surface-variant active:scale-95">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-2 rounded border border-outline-variant/30 hover:bg-surface-variant transition-all text-on-surface-variant active:scale-95">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full mt-auto bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-8 max-w-container-max mx-auto">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">TRADES</span>
+<p class="font-body-sm text-body-sm text-outline uppercase tracking-tighter">© 2024 TRADES NEON SYNDICATE. ALL RIGHTS RESERVED.</p>
+</div>
+<div class="flex gap-6 mt-6 md:mt-0">
+<a class="font-body-sm text-body-sm text-outline hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-outline hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-outline hover:text-primary-fixed transition-colors" href="#">Discord</a>
+<a class="font-body-sm text-body-sm text-outline hover:text-primary-fixed transition-colors" href="#">Twitter</a>
+<a class="font-body-sm text-body-sm text-outline hover:text-primary-fixed transition-colors" href="#">Support</a>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container/90 backdrop-blur-xl border-t border-outline-variant/20 z-50 flex justify-around items-center h-16">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] font-label-sm">Assets</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary-fixed" href="#">
+<span class="material-symbols-outlined" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="text-[10px] font-label-sm">History</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-label-sm">Settings</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interactions for the trade table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.boxShadow = "inset 4px 0 0 #00dbe7";
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.boxShadow = "none";
+            });
+        });
+    </script>
+</body></html>
