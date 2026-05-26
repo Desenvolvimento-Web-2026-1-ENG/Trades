@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "surface-container-low": "#141c28",
+                        "on-primary": "#00363a",
+                        "background": "#0c1420",
+                        "secondary-container": "#4f8eff",
+                        "surface-variant": "#2d3542",
+                        "on-surface": "#dbe3f4",
+                        "inverse-surface": "#dbe3f4",
+                        "on-primary-fixed": "#002022",
+                        "on-background": "#dbe3f4",
+                        "outline-variant": "#3a494b",
+                        "on-secondary-container": "#00275e",
+                        "on-tertiary-fixed-variant": "#5700c9",
+                        "primary-container": "#00f2ff",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-surface-variant": "#b9cacb",
+                        "on-error": "#690005",
+                        "tertiary": "#fcf5ff",
+                        "surface": "#0c1420",
+                        "on-secondary-fixed-variant": "#004396",
+                        "inverse-primary": "#00696f",
+                        "surface-container-lowest": "#070e1a",
+                        "on-tertiary-container": "#7318ff",
+                        "on-secondary-fixed": "#001a42",
+                        "on-primary-container": "#006a71",
+                        "inverse-on-surface": "#29313e",
+                        "outline": "#849495",
+                        "surface-tint": "#00dbe7",
+                        "surface-container-highest": "#2d3542",
+                        "tertiary-container": "#e3d4ff",
+                        "surface-dim": "#0c1420",
+                        "primary": "#e1fdff",
+                        "tertiary-fixed": "#e9ddff",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#23005b",
+                        "secondary": "#aec6ff",
+                        "on-tertiary": "#3c0090",
+                        "error": "#ffb4ab",
+                        "surface-container": "#18202c",
+                        "primary-fixed-dim": "#00dbe7",
+                        "surface-bright": "#323947",
+                        "on-secondary": "#002e6a",
+                        "surface-container-high": "#232a37",
+                        "secondary-fixed-dim": "#aec6ff",
+                        "tertiary-fixed-dim": "#d1bcff",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed": "#74f5ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-sm": ["Sora"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-md": ["Sora"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Sora"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-xl-mobile": ["Sora"],
+                        "headline-xl": ["Sora"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0c1420;
+            color: #dbe3f4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(24, 32, 44, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(132, 148, 149, 0.2);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+        }
+        .holographic-sweep {
+            position: relative;
+            overflow: hidden;
+        }
+        .holographic-sweep::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 45%,
+                rgba(0, 242, 255, 0.1) 50%,
+                transparent 55%
+            );
+            transform: rotate(45deg);
+            animation: sweep 5s infinite;
+        }
+        @keyframes sweep {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-none docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-container-max mx-auto h-16">
+<div class="font-headline-md text-headline-md font-black tracking-tighter text-primary-container drop-shadow-[0_0_8px_rgba(0,242,255,0.5)]">
+                TRADES
+            </div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 font-label-md text-label-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 font-label-md text-label-md" href="#">Inventory</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 font-label-md text-label-md" href="#">Marketplace</a>
+<a class="text-primary-container border-b-2 border-primary-container pb-1 font-label-md text-label-md" href="#">Proposals</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-bright/50 transition-all duration-300 rounded-full active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-bright/50 transition-all duration-300 rounded-full active:scale-95">account_balance_wallet</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-primary-container/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRcx3j04ZTN1fm2z4QoN8ntLZpxgfQSxhXe0IoDE52LJ6ZJy3B-6Bzqlefj1FAt7lmMPDBxssbL-XyY0qvlwpFF1Zb1W7IdDRJIcrtfyUU657TikVwh_nSqE1pyEME2ex6YYcEKH7fLFy7w_M4wiOQxUBdfg5iF6xDNFrKgXA9ls0FPfvoh8lGz2-15_qc11fQULY7t141c__HqMDDufiaolMw_QsnPjWUJbf7qqTgACXdI8H-7NQfgF1aJNCGbntyM63tFHAhJsdF"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-0 h-full z-40 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 shadow-[10px_0_30px_-15px_rgba(0,0,0,0.5)] docked left-0 h-full w-64 pt-20">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<img alt="Collector Profile" class="w-10 h-10 rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQq6NsrSFZthcrd2-7JDd8rwQqACldw6Jr2-nTxabx9l-wMFXq6v-kquEWV1BYZjyPBQSkWCB89uXgijYDtvCGCjeylNDymDWlgyYpPzeXViofGMPtaEqHB9V8D2e4Ag6uPZeMpHtAaldQ0C2NH34WBmXKLW16-5iMUyclOoR-MEcRNg_avSU4D6eGYfNbXuGbHupzr0cihTE277jCtbuAuU_AjJPMKPiOOA1I96JeZRY6wWOjNzgJvp3EKI8mNP_sqP5qgnrf2AX3"/>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary-container">Collector Alpha</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Pro Trader</p>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-4 hover:bg-surface-container-high/50 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-4 hover:bg-surface-container-high/50 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Vault</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-4 hover:bg-surface-container-high/50 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-md text-label-md">Market</span>
+</a>
+<a class="bg-secondary-container/20 text-primary-container border-r-4 border-primary-container flex items-center gap-4 px-6 py-4 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-label-md text-label-md">Trades</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-6 py-4 hover:bg-surface-container-high/50 hover:text-primary transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-container font-label-md text-label-md rounded-lg font-bold shadow-lg shadow-primary-container/20 active:scale-95 transition-transform">
+                New Trade
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="lg:ml-64 pt-8 pb-24 px-4 md:px-8">
+<div class="max-w-container-max mx-auto">
+<!-- Page Header & Filters -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary drop-shadow-[0_0_10px_rgba(0,242,255,0.2)] mb-2">Propostas Recebidas</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Analise as ofertas recebidas de outros negociadores e gerencie seu portfólio.</p>
+</div>
+<div class="flex bg-surface-container p-1 rounded-xl border border-outline-variant/30">
+<button class="px-5 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md">All</button>
+<button class="px-5 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md">Pending</button>
+<button class="px-5 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md">Completed</button>
+<button class="px-5 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md">Cancelled</button>
+</div>
+</div>
+<!-- Proposals Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+<!-- Proposal Card 1 -->
+<div class="glass-panel rounded-xl p-6 holographic-sweep group hover:border-primary-container/50 transition-all duration-500">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Sender avatar" class="w-12 h-12 rounded-full border-2 border-primary-container/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMhc_pHl504WWIH-MI2Et8Vfkmx5Z1_E7k-M5_2wKhPNEaJ6se1OByO1u6nfCZIE3MRtdm_28KW7qGq7oC2bj7aP7WRqMteaTyFsUpZLYNLsdj3AcvJB6NgM6TprpY1dlWv3UXqqlFTB3-SRcZmQ0f7lvmk-zfg3oIFcm17fV50npKvuXf9vKBUBpkfAagJKqoPB89-al3FMVRL5sXPdx1m2YlVxwfLfrWSRWuffDHTMYaODE5tHMvpp19PUTPzW11iGHV3S7S5gCG"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-surface shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Vektor_X</h3>
+<div class="flex gap-2 items-center">
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-primary-container/10 text-primary-container uppercase tracking-widest border border-primary-container/20">Elite Trader</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">52 Trades</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-block font-label-sm text-label-sm bg-primary-container/20 text-primary-container px-3 py-1 rounded-full mb-2 neon-glow-primary border border-primary-container/40">NEW</span>
+<p class="font-label-sm text-label-sm text-error/80 flex items-center gap-1 justify-end">
+<span class="material-symbols-outlined text-[14px]">timer</span> Expires in 12h
+                            </p>
+</div>
+</div>
+<!-- Items Comparison -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<!-- Your Items -->
+<div class="bg-surface-container-low/50 rounded-lg p-4 border border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-3 uppercase tracking-tighter">Your Items</p>
+<div class="flex gap-2">
+<div class="w-16 h-20 rounded-md bg-surface-container-high border border-outline-variant/30 flex flex-col items-center justify-center p-1 relative">
+<img class="w-full h-full object-cover rounded opacity-80" data-alt="A rare vintage holographic Pokemon card featuring a high-fidelity digital illustration of Charizard with glowing ember particles against a deep navy background. The card texture shows a subtle light-sweep effect characteristic of premium collectibles, reflecting the neon cyan and blue tones of the Neon Syndicate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFL4s1crxz2U8Wa41vM74EchQdA-uQPztCKp9cachYDHgRQuOB0e8x5B-X6cu0n7L_hZ1-jBHNk0jsiMmXj7TbsCQFQdmAZKdirkycXvCyjeT8MYSRU6QcoW402Fd6aMEul-_A6u4xIHtJsiEH_nCLLDj2sxR6Y4_uGswktISB-y7_yeF3RTb30v_FzhZBdE_tSIHv_20hVm05kVSZhUmB1Nuq8HE1xtuMYPZPB-ir0L92zLEl1PctIKTJI5t36p7fi6mxd1Tbijx7"/>
+<div class="absolute top-0 right-0 bg-primary-container text-on-primary-container text-[8px] px-1 font-bold rounded-bl-md">Lvl 9</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Charizard VMAX</span>
+<span class="font-label-sm text-label-sm text-primary-container">Est. 4,500 CR</span>
+</div>
+</div>
+</div>
+<!-- Their Items -->
+<div class="bg-surface-container-low/50 rounded-lg p-4 border border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-3 uppercase tracking-tighter">Their Items</p>
+<div class="flex gap-2">
+<div class="w-16 h-20 rounded-md bg-surface-container-high border border-outline-variant/30 flex flex-col items-center justify-center p-1 relative">
+<img class="w-full h-full object-cover rounded opacity-80" data-alt="A premium Magic The Gathering trading card with an intricate dark fantasy landscape illustration. The art features a glowing blue portal under a moonlit sky, rendered in a high-octane digital painting style. The card has a clean geometric border and a holographic finish that sparkles with primary cyan highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcsONe7W4znkgecmyXmfxhASuvEO3uRhsx5rWkCjk_aXXe4k7aTHyHGak3rLYKVlPEqKUqR8EyCWAMXuEI7ohEb1nKZlnvNlwyT9nzHeOdnh_n_de5cdFBsMPElIrjmDmVVU0E8a869OIDNv-i5psJjIL88rDXl9uV4KuUTqkPeqEO4214Eb9MZurpmHZq1nnMpBcFgAm-k0U4zaJ9m8cAOuIGrQ0VOAtIcwluWBTPoGse7G5B8hvN_1NFr3jm2whUbmYCiNDlhmdv"/>
+<div class="absolute top-0 right-0 bg-tertiary-container text-on-tertiary-container text-[8px] px-1 font-bold rounded-bl-md">MINT</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Mox Amber (Retro)</span>
+<span class="font-label-sm text-label-sm text-primary-container">Est. 5,200 CR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Value Diff & Actions -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-4 border-t border-outline-variant/20">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Balance Difference</span>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-green-400">+700 CR</span>
+<span class="material-symbols-outlined text-green-400 text-[18px]">trending_up</span>
+</div>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none px-6 py-2.5 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-bright/30 transition-all font-label-md text-label-md">Review</button>
+<button class="flex-1 md:flex-none px-6 py-2.5 rounded-lg bg-primary-container text-on-primary-container hover:shadow-[0_0_20px_rgba(0,242,255,0.4)] transition-all font-label-md text-label-md font-bold">Accept</button>
+<button class="material-symbols-outlined p-2.5 rounded-lg border border-error/30 text-error hover:bg-error/10 transition-all">close</button>
+</div>
+</div>
+</div>
+<!-- Proposal Card 2 -->
+<div class="glass-panel rounded-xl p-6 holographic-sweep group hover:border-primary-container/50 transition-all duration-500">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-4">
+<div class="relative">
+<img alt="Sender avatar" class="w-12 h-12 rounded-full border-2 border-secondary-container/50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxoedtr5k3YxoWiMYtYlrDddoOQ3xoL2c9NXVP0Oc6I72pYxQD1N1-NDv3DjmBh6SSk25yQD8ekIci-nV4MzN9kTEaVrvtW1Rj5KALwyTeCXNOUmtTSluY5yVbX5KCmcv3i5Ar1c-Y3R9a0C-hGGP0dWU0ixM19kGFWUoN0JUz9Xnc5dXhkqdXRgmR0SdsCVsMT33Pz7ZMgsVujT2-QbRxAPHCwDVjIqnZ4N7cnPgguXFJkrc1dpqORbLXJKBp0Wl9scpAjN_bbYhX"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-gray-500 rounded-full border-2 border-surface"></div>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">NeonShadow</h3>
+<div class="flex gap-2 items-center">
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-secondary-container/10 text-secondary-container uppercase tracking-widest border border-secondary-container/20">Vault Member</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">128 Trades</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-block font-label-sm text-label-sm bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full mb-2 border border-outline-variant/30">PENDING</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 justify-end">
+<span class="material-symbols-outlined text-[14px]">timer</span> Expires in 2d
+                            </p>
+</div>
+</div>
+<!-- Items Comparison -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<!-- Your Items -->
+<div class="bg-surface-container-low/50 rounded-lg p-4 border border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-3 uppercase tracking-tighter">Your Items</p>
+<div class="flex flex-col gap-2">
+<div class="flex gap-2 items-center">
+<div class="w-10 h-10 rounded bg-surface-container-high border border-outline-variant/30 flex items-center justify-center font-label-md text-label-md text-on-surface-variant">x3</div>
+<div class="flex flex-col">
+<span class="font-body-sm text-body-sm text-on-surface">Rare Booster Packs</span>
+<span class="font-label-sm text-label-sm text-primary-container">Est. 1,200 CR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Their Items -->
+<div class="bg-surface-container-low/50 rounded-lg p-4 border border-outline-variant/10">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-3 uppercase tracking-tighter">Their Items</p>
+<div class="flex gap-2">
+<div class="w-16 h-20 rounded-md bg-surface-container-high border border-outline-variant/30 flex flex-col items-center justify-center p-1 relative">
+<img class="w-full h-full object-cover rounded opacity-80" data-alt="A rare Yugioh card with a stunning golden ultra-rare finish. The illustration features a mechanical dragon with glowing blue eyes, set against a dark swirling galaxy background. The card's aesthetic is technical and elite, fitting perfectly within a professional financial-grade trading dashboard with glassmorphism and high-contrast neon accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCReZWnWIaxXnmQ3FuyHJubXK_Pks5bA6QDKS7sOZv5DbxmiH2pf8Wt55Pmw-JhEAPtJg0zurm_elR55Vq0ftzbt0M4LOVk-1R2rDtnE1R54X5KqnKEuDRK7GJfxkG3fH9-9GmDCd6O7JQUvo1VMRIvvPoZZOs4fLcOo-ydptDSyme_0Zy7PopABK-RRg9TlgKjpWBkwX1EIPb8vebykaG1hQzqUI32_06iXFgIk8njNGhtDf3cCjd4T7FuS9_xfpUfcQ-4qN-ak9JC"/>
+<div class="absolute top-0 right-0 bg-primary-container text-on-primary-container text-[8px] px-1 font-bold rounded-bl-md">S-RARE</div>
+</div>
+<div class="flex flex-col justify-center">
+<span class="font-body-sm text-body-sm text-on-surface font-semibold">Blue-Eyes Alternative</span>
+<span class="font-label-sm text-label-sm text-primary-container">Est. 1,150 CR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Value Diff & Actions -->
+<div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-4 border-t border-outline-variant/20">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">Balance Difference</span>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-error/80">-50 CR</span>
+<span class="material-symbols-outlined text-error/80 text-[18px]">trending_down</span>
+</div>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none px-6 py-2.5 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-bright/30 transition-all font-label-md text-label-md">Review</button>
+<button class="flex-1 md:flex-none px-6 py-2.5 rounded-lg bg-primary-container text-on-primary-container hover:shadow-[0_0_20px_rgba(0,242,255,0.4)] transition-all font-label-md text-label-md font-bold">Accept</button>
+<button class="material-symbols-outlined p-2.5 rounded-lg border border-error/30 text-error hover:bg-error/10 transition-all">close</button>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden by default, used for logic) -->
+<div class="hidden col-span-full py-20 flex flex-col items-center justify-center glass-panel rounded-2xl border-dashed border-2 border-outline-variant/30" id="empty-state">
+<span class="material-symbols-outlined text-[64px] text-on-surface-variant/30 mb-4">move_to_inbox</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Sem propostas pendentes</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-center max-w-md px-6">
+                        Seu cofre está seguro! Atualmente você não tem propostas de troca recebidas. Tente listar mais itens no Marketplace para atrair interessados.
+                    </p>
+<button class="mt-8 px-8 py-3 bg-secondary-container/20 border border-secondary-container/40 text-primary-container rounded-lg font-label-md text-label-md hover:bg-secondary-container/40 transition-all">
+                        Explorar Marketplace
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-surface-container/90 dark:bg-surface-container/90 backdrop-blur-lg border-t border-outline-variant/30 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-sm text-label-sm">Market</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary-container drop-shadow-[0_0_5px_rgba(0,242,255,0.8)]" href="#">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span class="font-label-sm text-label-sm">Trades</span>
+</a>
+</nav>
+<script>
+        // Simple interactivity for demonstration
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                if(btn.innerText === 'close') {
+                    const card = btn.closest('.glass-panel');
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.remove();
+                        checkEmptyState();
+                    }, 300);
+                }
+            });
+        });
+
+        function checkEmptyState() {
+            const grid = document.querySelector('.grid');
+            const cards = grid.querySelectorAll('.glass-panel');
+            if (cards.length === 0) {
+                document.getElementById('empty-state').classList.remove('hidden');
+            }
+        }
+
+        // Add a mouse-following light effect to the cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

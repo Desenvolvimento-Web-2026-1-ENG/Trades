@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TRADES | Negotiation Floor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#323947",
+                        "on-tertiary-fixed": "#23005b",
+                        "on-secondary": "#002e6a",
+                        "on-surface-variant": "#b9cacb",
+                        "inverse-surface": "#dbe3f4",
+                        "on-surface": "#dbe3f4",
+                        "surface-container-lowest": "#070e1a",
+                        "surface-container-high": "#232a37",
+                        "surface-dim": "#0c1420",
+                        "outline-variant": "#3a494b",
+                        "tertiary-container": "#e3d4ff",
+                        "on-background": "#dbe3f4",
+                        "surface-container-highest": "#2d3542",
+                        "inverse-on-surface": "#29313e",
+                        "on-tertiary-fixed-variant": "#5700c9",
+                        "secondary-container": "#4f8eff",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-primary": "#00363a",
+                        "surface-container": "#18202c",
+                        "primary-fixed-dim": "#00dbe7",
+                        "tertiary-fixed": "#e9ddff",
+                        "primary-fixed": "#74f5ff",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#d8e2ff",
+                        "surface-tint": "#00dbe7",
+                        "on-primary-fixed": "#002022",
+                        "outline": "#849495",
+                        "on-secondary-fixed": "#001a42",
+                        "surface-variant": "#2d3542",
+                        "on-tertiary": "#3c0090",
+                        "primary": "#e1fdff",
+                        "inverse-primary": "#00696f",
+                        "secondary": "#aec6ff",
+                        "tertiary": "#fcf5ff",
+                        "on-primary-container": "#006a71",
+                        "secondary-fixed-dim": "#aec6ff",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "background": "#0c1420",
+                        "surface-container-low": "#141c28",
+                        "primary-container": "#00f2ff",
+                        "surface": "#0c1420",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#00275e",
+                        "tertiary-fixed-dim": "#d1bcff",
+                        "on-tertiary-container": "#7318ff",
+                        "on-secondary-fixed-variant": "#004396"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "body-md": ["Inter"],
+                        "headline-xl-mobile": ["Sora"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-sm": ["Sora"],
+                        "headline-lg": ["Sora"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(24, 32, 44, 0.15);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+        }
+        .glow-border:hover {
+            border-color: #00f2ff;
+            box-shadow: 0 0 8px rgba(0, 242, 255, 0.3);
+        }
+        .holo-sweep::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 0%, rgba(0, 242, 255, 0.05) 50%, transparent 100%);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+        .holo-sweep:hover::after {
+            top: 100%;
+            left: 100%;
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3a494b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 docked full-width top-0 sticky z-50 h-16">
+<div class="flex justify-between items-center w-full px-8 mx-auto h-full">
+<div class="flex items-center gap-6">
+<img alt="TRADES Logo" class="h-8 w-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxyzk6tFgTti7PIhA2KUKX02WS6ki0-ek0iJUKcNPWRoGKm2N-f81xPwisgCgQuOM1v0DSsLeLfjH6YGefB75PKu7gyR7F9fG8IUEK04XnqkopbQ5fCq04RqlIRhZ_MYFmy42CMSY1urSJX81q4rvb0UVGWkR125YhDbfLPN0I7uOBM07HlzHJLRpx022RJna34GLJSyei8xQl74IYfCoJjWKV6OOaY5Xck_cECjFeV_zi-niwHbs0sJSaPsO2nH0fOkBNK9Wl9GJP"/>
+<nav class="hidden md:flex gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-200" href="#">Dashboard</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-200" href="#">Inventory</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors duration-200" href="#">Marketplace</a>
+<a class="font-label-md text-label-md text-primary-container border-b-2 border-primary-container pb-1" href="#">Proposals</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-high px-4 py-1.5 rounded-full border border-outline-variant/30 hidden sm:flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px]">account_balance_wallet</span>
+<span class="font-label-md text-label-md">14,250 CR</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary-container">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A futuristic digital avatar of a professional trade collector, featuring subtle neon light reflections on their sharp features, wearing tactical urban streetwear, set against a blurred high-tech digital interface background with cyan and navy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwwh0EeR8tTw_p1HGe3DOa6keYN1-3Zx6DGRLHFUwJOqusR28kEbS85BtppUHNAD-EH_EYk5osSlB6Jx9yag5v-1mTMDPvkx1xSJYvcpzUErpF3u893JKUEtt1JpYAJFVYi5DMqqXsVqyRqQkLuF0O-dngi3mgHLtvLte0Gu009FpFxZGenBBjzdUiHUNWv44YafI4qedBLmyDu_7DP81fEDfYhmUTE6T84KPqBXQ_9JbCbIyhXbGHxhbrVtipf2lmZnPekt-u0JrL"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-64px)]">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container-lowest/90 dark:bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container font-black">A</div>
+<div>
+<p class="font-headline-sm text-[16px] text-on-surface">Collector Alpha</p>
+<p class="font-body-sm text-on-surface-variant text-[12px]">Pro Trader</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md">Home</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md">Vault</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-md">Market</span>
+</a>
+<a class="bg-secondary-container/20 text-primary-container border-r-4 border-primary-container flex items-center gap-4 px-4 py-3" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-label-md">Trades</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-container-high/50 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Settings</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-6">
+<button class="w-full py-4 bg-primary-container text-on-primary-container font-headline-sm text-[14px] rounded-xl active:scale-[0.98] transition-transform shadow-[0_0_15px_rgba(0,242,255,0.3)]">
+                    New Trade
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 p-6 lg:p-8 flex flex-col xl:flex-row gap-6">
+<!-- Central Negotiation Floor -->
+<div class="flex-1 space-y-6">
+<!-- Header Stats -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 glass-panel p-6 rounded-2xl border-l-4 border-l-primary-container">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface neon-text-glow">Proposal #8821</h1>
+<p class="font-body-sm text-on-surface-variant">Negotiating with <span class="text-primary-container font-bold">ShadowUser</span> • Expires in 23h 12m</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-widest">Market Stability</p>
+<p class="font-headline-sm text-primary-container">98.2%</p>
+</div>
+<div class="h-10 w-px bg-outline-variant/30"></div>
+<div class="text-right">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-widest">Escrow Hash</p>
+<p class="font-label-md text-secondary">0x8B...F2A</p>
+</div>
+</div>
+</div>
+<!-- Comparison Split View -->
+<div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
+<!-- Your Offer -->
+<div class="space-y-4">
+<div class="flex justify-between items-end px-2">
+<h2 class="font-headline-sm text-on-surface">Your Offer</h2>
+<p class="font-label-md text-on-surface-variant">2/5 items <span class="text-primary-container ml-2">12,400 CR</span></p>
+</div>
+<div class="grid grid-cols-2 gap-3 glass-panel p-4 rounded-2xl min-h-[400px]">
+<!-- Item Card 1 -->
+<div class="relative group aspect-[3/4] rounded-xl overflow-hidden border border-outline-variant/30 hover:border-primary-container transition-all cursor-pointer holo-sweep">
+<img alt="Cyber Talon" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" data-alt="A highly detailed close-up of a rare futuristic cybernetic talon collectible, featuring glowing cyan neural pathways, polished chrome surfaces, and sharp geometric edges. The item is presented in a high-fidelity digital display with floating data pips and atmospheric blue light reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxvWGcoAiCZszjruhVlWFveAo2QB5opTmZRWYteKRSqdNc1u0NCikIMZppfjhI15fM0tlzJiiJ8uis42ymZfzSCW0X7IPgX8W4asn81K6A4vOhHJb_S9C84an8860lz5NtgnuhmekqGy54eT7KvfCfed-MBl93I_OXGrTwsWqn0dsYf6VZbIK3ZwBLO3-rsqZMk9eRz86SbDDuXAbc8vs41MmCwzCaNpQZFfunOUDHErYmzIPhtcsnCt-Eg9zeDKakX3kvBVrNAb76"/>
+<div class="absolute bottom-0 left-0 right-0 p-3 bg-surface-dim/80 backdrop-blur-md">
+<p class="font-label-sm text-primary-container text-[10px] mb-1">ELITE RAITY</p>
+<p class="font-headline-sm text-[14px]">Cyber Talon</p>
+</div>
+<button class="absolute top-2 right-2 w-6 h-6 bg-error/20 text-error rounded-full flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Item Card 2 -->
+<div class="relative group aspect-[3/4] rounded-xl overflow-hidden border border-outline-variant/30 hover:border-primary-container transition-all cursor-pointer holo-sweep">
+<img alt="Neural Core" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-500" data-alt="A stunning digital trading card featuring a neon-infused circuit board relic. The item glows with internal amber and blue energy, encased in a shimmering glassmorphic frame with sharp tactical indicators and a tech-noir aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmQvUjXALB9d4BzBoYKaXasfpvdahuoZAsyNOSkEsDhqMA6okBRoSqHoBVnf_vjzCNmW8Utn1yukxuY7rEAl6j9LgRCOdpT-2nQFGKD3hFbdTk6wH-BGyvoQtEIwG4GauKrMqQw2tT5oqhMKqrMOSugR8OFbasIgRafsl18Ysi7pZQBh4zN6pJhwlK36sas8u4ojcVecs7bvNPvf-R2XwczABXkwsiA6BD4bxRp6-s8IsdnH2e3i9zseP7vvtiwMGauDXbn5xjD4vr"/>
+<div class="absolute bottom-0 left-0 right-0 p-3 bg-surface-dim/80 backdrop-blur-md">
+<p class="font-label-sm text-secondary text-[10px] mb-1">RARE</p>
+<p class="font-headline-sm text-[14px]">Neural Core</p>
+</div>
+<button class="absolute top-2 right-2 w-6 h-6 bg-error/20 text-error rounded-full flex items-center justify-center backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+<!-- Add Slot -->
+<button class="flex flex-col items-center justify-center gap-2 aspect-[3/4] rounded-xl border-2 border-dashed border-outline-variant/30 hover:border-primary-container hover:bg-primary-container/5 transition-all text-on-surface-variant hover:text-primary-container">
+<span class="material-symbols-outlined text-[32px]">add_circle</span>
+<span class="font-label-md">Add Item</span>
+</button>
+<!-- Empty Slot -->
+<div class="aspect-[3/4] rounded-xl border border-outline-variant/10 bg-surface-container-low/20"></div>
+</div>
+</div>
+<!-- Swap Animation Center -->
+<div class="flex flex-col items-center justify-center py-4 md:py-0">
+<div class="relative">
+<div class="absolute inset-0 bg-primary-container/20 rounded-full blur-2xl animate-pulse"></div>
+<div class="relative w-16 h-16 rounded-full bg-surface-container-highest border-2 border-primary-container flex items-center justify-center shadow-[0_0_20px_rgba(0,242,255,0.4)]">
+<span class="material-symbols-outlined text-primary-container text-[32px] animate-[spin_10s_linear_infinite]">sync</span>
+</div>
+</div>
+<div class="hidden md:block h-32 w-px bg-gradient-to-b from-transparent via-outline-variant/50 to-transparent my-4"></div>
+</div>
+<!-- Their Request -->
+<div class="space-y-4">
+<div class="flex justify-between items-end px-2">
+<h2 class="font-headline-sm text-on-surface">Their Request</h2>
+<p class="font-label-md text-on-surface-variant">1 item requested</p>
+</div>
+<div class="glass-panel p-4 rounded-2xl min-h-[400px] flex flex-col">
+<div class="relative flex-1 group rounded-xl overflow-hidden border-2 border-primary-container/50 shadow-[0_0_30px_rgba(0,242,255,0.15)]">
+<img alt="Event Horizon #001" class="w-full h-full object-cover" data-alt="The 'Event Horizon #001' ultra-rare collectible artifact, shown as a swirling black hole contained within a crystal sphere. It radiates intense violet and cyan light trails. The surrounding environment is a professional, high-tech digital vault with floating status chips and intricate technical data overlays, designed in a premium futuristic cyberpunk style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlktT4_JEPUTqe16fYwi8h0IUX7GJ9KLEXWHvFWFXW1IzUEHAPtcsW6JMW-qemsNCVlEVBdSDwd-k8WLnAldwIa-94QiMblvF5eoOZbE_aiSKGvkaQ8QU9fv1ivZhRVh8WOS-IOKGPfV0IM74BNlozxhArDoSjfKiAYRBSZLFEgyN0OihhiAc0mfcEo7VFaETR3vhrE4so-j6dB3o8NRjgZNA5sCupUsvJAnCPVI6K-LqoI8sZiiMIGIAs_rhMu25wkuEZxnG3jx8a"/>
+<div class="absolute top-4 left-4 flex gap-2">
+<span class="px-3 py-1 bg-primary-container text-on-primary-container font-label-sm rounded-full text-[10px] tracking-widest shadow-lg">ULTRA RARE</span>
+<span class="px-3 py-1 bg-surface-dim/80 backdrop-blur-md text-on-surface font-label-sm rounded-full text-[10px] border border-outline-variant/30">MINT 10</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-surface-container-highest to-transparent">
+<p class="font-headline-lg text-[20px] mb-1">Event Horizon #001</p>
+<p class="font-body-sm text-on-surface-variant">Creator: <span class="text-secondary">Nexus Labs</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Negotiation Chat Widget -->
+<div class="glass-panel rounded-2xl overflow-hidden border border-outline-variant/20 flex flex-col h-[300px]">
+<div class="px-6 py-4 bg-surface-container border-b border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container">security</span>
+<span class="font-label-md">Secure Negotiation Channel</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="font-body-sm text-on-surface-variant text-[12px]">ShadowUser is typing...</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex-shrink-0"></div>
+<div class="bg-surface-container-high/50 p-4 rounded-2xl rounded-tl-none max-w-[80%] border border-outline-variant/10">
+<p class="font-body-sm">I'm interested in the Cyber Talon, but I need some extra credits to cover the platform fee. Can you add 500 CR to the offer?</p>
+<span class="block mt-2 font-label-sm text-[10px] text-on-surface-variant">14:22</span>
+</div>
+</div>
+<div class="flex gap-4 flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-primary-container flex-shrink-0"></div>
+<div class="bg-primary-container/10 p-4 rounded-2xl rounded-tr-none max-w-[80%] border border-primary-container/20">
+<p class="font-body-sm text-primary">I've added the Neural Core instead of credits. It has a higher market re-sale value. Check the updated stats.</p>
+<span class="block mt-2 font-label-sm text-[10px] text-primary-fixed-dim/60">14:25</span>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container/50 border-t border-outline-variant/20">
+<div class="relative">
+<input class="w-full bg-surface-dim border border-outline-variant/30 rounded-xl px-6 py-3 focus:outline-none focus:border-primary-container transition-all font-body-sm" placeholder="Send a message..." type="text"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-primary-container">send</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Trade Summary -->
+<aside class="w-full xl:w-80 space-y-6">
+<!-- Status Panel -->
+<div class="glass-panel p-6 rounded-2xl border-t-4 border-t-secondary relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-secondary/30 text-[48px] rotate-12">verified_user</span>
+</div>
+<h3 class="font-headline-sm mb-6">Trade Status</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-[20px]">check_circle</span>
+<div class="flex-1">
+<p class="font-label-md text-[13px]">Escrow Ready</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Assets locked &amp; verified</p>
+</div>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-[20px]">check_circle</span>
+<div class="flex-1">
+<p class="font-label-md text-[13px]">Identity Verified</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Both parties biometric-sync</p>
+</div>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">pending</span>
+<div class="flex-1">
+<p class="font-label-md text-[13px]">Final Authorization</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Awaiting your sign-off</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Fee Estimator -->
+<div class="glass-panel p-6 rounded-2xl border border-outline-variant/20">
+<h3 class="font-label-md text-on-surface-variant uppercase tracking-widest mb-4">Financials</h3>
+<div class="space-y-3">
+<div class="flex justify-between font-body-sm">
+<span class="text-on-surface-variant">Offer Value</span>
+<span>12,400 CR</span>
+</div>
+<div class="flex justify-between font-body-sm">
+<span class="text-on-surface-variant">Platform Fee (2%)</span>
+<span class="text-error">-248 CR</span>
+</div>
+<div class="flex justify-between font-body-sm">
+<span class="text-on-surface-variant">Network Gas</span>
+<span class="text-error">-12 CR</span>
+</div>
+<div class="h-px bg-outline-variant/30 my-2"></div>
+<div class="flex justify-between items-center">
+<span class="font-headline-sm text-[16px]">Total Cost</span>
+<span class="font-headline-sm text-primary-container">12,660 CR</span>
+</div>
+</div>
+</div>
+<!-- Rating -->
+<div class="glass-panel p-6 rounded-2xl flex items-center justify-between border border-primary-container/10">
+<div>
+<p class="font-label-sm text-on-surface-variant uppercase mb-1">Trade Health</p>
+<p class="font-headline-sm text-primary-container">Excellent</p>
+</div>
+<div class="flex gap-1 text-primary-container">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]">star_half</span>
+</div>
+</div>
+<!-- Action Panel -->
+<div class="space-y-3 pt-4">
+<button class="w-full py-4 bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-container font-headline-sm text-[16px] rounded-xl active:scale-[0.96] transition-all shadow-[0_0_20px_rgba(0,242,255,0.4)] group overflow-hidden relative">
+<span class="relative z-10 flex items-center justify-center gap-2">
+                            AUTHORIZE PROPOSAL
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">bolt</span>
+</span>
+<div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out skew-x-12"></div>
+</button>
+<button class="w-full py-3 bg-transparent border border-outline-variant/30 text-on-surface-variant font-label-md rounded-xl hover:bg-error/10 hover:text-error hover:border-error transition-all">
+                        Cancel Trade
+                    </button>
+</div>
+</aside>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 pb-safe bg-surface-container/90 backdrop-blur-lg border-t border-outline-variant/30 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-[10px]">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-[10px]">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Vault</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-container drop-shadow-[0_0_5px_rgba(0,242,255,0.8)] font-label-sm text-[10px]">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span>Trades</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-sm text-[10px]">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span>Market</span>
+</div>
+</nav>
+<script>
+        // Subtle mouse tracking for glass panels
+        document.addEventListener('mousemove', (e) => {
+            const panels = document.querySelectorAll('.glass-panel');
+            const x = e.clientX;
+            const y = e.clientY;
+
+            panels.forEach(panel => {
+                const rect = panel.getBoundingClientRect();
+                const px = x - rect.left;
+                const py = y - rect.top;
+                
+                if (px > 0 && px < rect.width && py > 0 && py < rect.height) {
+                    panel.style.setProperty('--x', `${px}px`);
+                    panel.style.setProperty('--y', `${py}px`);
+                }
+            });
+        });
+    </script>
+</body></html>

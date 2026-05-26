@@ -26,13 +26,6 @@ O objetivo do wireframe é apresentar a estrutura visual inicial do sistema, dem
 
 ---
 
-## 📦 Dashboard do Colecionador
-
-> Espaço reservado para a imagem da prototipagem do Dashboard.
-
-![Dashboard](/assets/)
-
----
 
 ## 🃏 Inventário de Itens
 
@@ -47,7 +40,7 @@ O objetivo do wireframe é apresentar a estrutura visual inicial do sistema, dem
 
 > Espaço reservado para a imagem da prototipagem do Cadastro de Item.
 
-![Cadastro de Item](./assets/wireframes/cadastro-item.png)
+![Cadastro de Item](/assets/adicionar%20item/screen.png)
 
 ---
 
@@ -55,7 +48,7 @@ O objetivo do wireframe é apresentar a estrutura visual inicial do sistema, dem
 
 > Espaço reservado para a imagem da prototipagem da Busca de Itens.
 
-![Busca de Itens](./assets/wireframes/busca.png)
+![Busca de Itens](/assets/busca%20por%20item/screen.png)
 
 ---
 
@@ -63,7 +56,7 @@ O objetivo do wireframe é apresentar a estrutura visual inicial do sistema, dem
 
 > Espaço reservado para a imagem da prototipagem da Proposta de Troca.
 
-![Proposta de Troca](./assets/wireframes/proposta.png)
+![Proposta de Troca](/assets/propostas/screen.png)
 
 ---
 
@@ -71,7 +64,7 @@ O objetivo do wireframe é apresentar a estrutura visual inicial do sistema, dem
 
 > Espaço reservado para a imagem da prototipagem das Propostas Recebidas.
 
-![Propostas Recebidas](./assets/wireframes/propostas.png)
+![Propostas Recebidas](/assets/propostas%20recebidas/screen.png)
 
 ---
 
@@ -83,13 +76,6 @@ O objetivo do wireframe é apresentar a estrutura visual inicial do sistema, dem
 
 ---
 
-## 🛠️ Painel Administrativo
-
-> Espaço reservado para a imagem da prototipagem do Painel Administrativo.
-
-![Painel Admin](/assets/painel_de_controle/screen.png)
-
----
 
 # 📌 Considerações Finais
 

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#004396",
+                        "inverse-surface": "#dbe3f4",
+                        "surface-container-lowest": "#070e1a",
+                        "surface-container-high": "#232a37",
+                        "outline-variant": "#3a494b",
+                        "secondary-fixed-dim": "#aec6ff",
+                        "primary": "#e1fdff",
+                        "on-primary": "#00363a",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#7318ff",
+                        "inverse-primary": "#00696f",
+                        "on-secondary": "#002e6a",
+                        "surface-container-low": "#141c28",
+                        "tertiary-fixed": "#e9ddff",
+                        "surface": "#0c1420",
+                        "surface-container-highest": "#2d3542",
+                        "surface-bright": "#323947",
+                        "background": "#0c1420",
+                        "secondary-fixed": "#d8e2ff",
+                        "on-tertiary": "#3c0090",
+                        "secondary-container": "#4f8eff",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary-container": "#00275e",
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-container": "#e3d4ff",
+                        "surface-tint": "#00dbe7",
+                        "on-tertiary-fixed": "#23005b",
+                        "surface-variant": "#2d3542",
+                        "surface-dim": "#0c1420",
+                        "on-surface": "#dbe3f4",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "tertiary": "#fcf5ff",
+                        "on-primary-container": "#006a71",
+                        "primary-fixed": "#74f5ff",
+                        "on-secondary-fixed": "#001a42",
+                        "inverse-on-surface": "#29313e",
+                        "secondary": "#aec6ff",
+                        "primary-fixed-dim": "#00dbe7",
+                        "surface-container": "#18202c",
+                        "outline": "#849495",
+                        "tertiary-fixed-dim": "#d1bcff",
+                        "on-background": "#dbe3f4",
+                        "on-tertiary-fixed-variant": "#5700c9",
+                        "primary-container": "#00f2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "margin-desktop": "64px",
+                        "unit": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Sora"],
+                        "headline-sm": ["Sora"],
+                        "headline-md": ["Sora"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Sora"],
+                        "label-md": ["JetBrains Mono"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "headline-xl-mobile": ["Sora"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-xl-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0c1420;
+            color: #dbe3f4;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(45, 53, 66, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+        }
+        .neon-border {
+            box-shadow: 0 0 10px rgba(0, 219, 231, 0.2), inset 0 0 5px rgba(0, 219, 231, 0.1);
+            border-color: rgba(0, 219, 231, 0.3);
+        }
+        .neon-glow-text {
+            text-shadow: 0 0 8px rgba(0, 219, 231, 0.6);
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0, 242, 255, 0) 0%, rgba(0, 242, 255, 0.05) 50%, rgba(0, 242, 255, 0) 100%);
+            opacity: 0.1;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100%; }
+        }
+        .holographic-hover:hover {
+            background: linear-gradient(135deg, rgba(0, 242, 255, 0.1) 0%, rgba(45, 53, 66, 0) 50%, rgba(0, 242, 255, 0.05) 100%);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface/10 dark:bg-surface/10 backdrop-blur-xl border-r border-outline-variant/30 shadow-[4px_0_24px_rgba(0,0,0,0.5)] z-50">
+<div class="flex flex-col h-full py-6 px-4">
+<div class="mb-10 px-4">
+<img alt="TRADES Logo" class="h-10 mb-2 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj-lpneaKcaOxRkzFYPW-kWte47hB_NNCeKOS__Y1vCqX2AcrrvDy-UDEeDhpNnKhliQBdFs5ApR22oXh3SAKPYuCgn-tm-WFXjNBrRdkuY0qrCOFH-PGAEOqMR2A7aMEXI_rYam6MiPuodPaPrxSxAZTQ3_BvupRhjuaPIw5L-7YSCu_IYVxC-y7twZBTfP74gZ231iGGpjlNxeFs2A7YfwcoHqREqD0tMAodHWHPWQzJto3JKkg_IsCJ97CKTpgsO4GtoUvCBExC"/>
+<div class="font-headline-lg text-headline-lg font-black tracking-tighter text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(0,219,231,0.6)]">TRADES</div>
+<div class="font-label-sm text-label-sm uppercase text-outline tracking-[0.2em]">Elite Vault</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/40 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md uppercase">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary-fixed-dim bg-secondary-container/20 border-l-4 border-primary-fixed-dim font-bold shadow-[inset_0_0_10px_rgba(0,219,231,0.1)]" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-md text-label-md uppercase">Marketplace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/40 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-md text-label-md uppercase">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/40 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dynamic_feed</span>
+<span class="font-label-md text-label-md uppercase">Live Activity</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-surface-variant/40 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-label-md text-label-md uppercase">Trading Floor</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 space-y-2">
+<button class="w-full bg-primary-container text-on-primary font-bold py-3 rounded-lg mb-4 flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">security</span>
+<span class="font-label-md text-label-md uppercase">Secure Trade</span>
+</button>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm uppercase">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">help_center</span>
+<span class="font-label-sm text-label-sm uppercase">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen relative">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-64 z-40 bg-surface/10 backdrop-blur-xl border-b border-outline-variant/30 h-16 px-gutter flex items-center justify-between">
+<div class="flex items-center gap-8">
+<nav class="hidden lg:flex gap-6">
+<a class="text-primary-fixed-dim border-b-2 border-primary-fixed-dim pb-1 font-label-md text-label-md uppercase" href="#">Hot Releases</a>
+<a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors font-label-md text-label-md uppercase" href="#">Vaulted</a>
+<a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors font-label-md text-label-md uppercase" href="#">Trending</a>
+</nav>
+</div>
+<div class="flex items-center gap-6 flex-1 justify-end">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/50 rounded-full py-2 pl-10 pr-4 text-body-sm font-body-sm focus:outline-none focus:ring-1 focus:ring-primary-fixed-dim focus:border-primary-fixed-dim transition-all" placeholder="Search elite assets, vaults, or traders..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">account_balance_wallet</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors">grid_view</span>
+<div class="w-8 h-8 rounded-full border border-primary-fixed-dim/50 overflow-hidden">
+<img alt="Collector Profile" class="w-full h-full object-cover" data-alt="A detailed digital close-up portrait of a professional collector in a futuristic trading environment. The subject has sharp features and wears a sleek, dark tech-wear jacket with glowing cyan accents. The background is a soft-focus digital vault with blue holographic data projections. The lighting is dramatic, high-contrast, and cold, emphasizing the high-stakes tech-driven marketplace atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoKUpC4QpF5-iAKAbrjQzqAFUArf-6xsbx_J-OWGgTdOnCEVQQaoFTs_twz_XqDybNODvODxRZNFvMg9Kq_uwAt9jZD4XkiGV63CafSazh3wsrCVnrxo68CA-m8wu2JQuESNNPrC8IgHp7BTLOV4Ulhc9KCdeIvD2IT6H7uvh1Cpi8VyhB8i0z3Mb2i8BEyHGpmYXFrGdrfl5TD5ifI975CAy5QJW_fZw2bn6FBdVmOoSt73vbBnGp50n_D5i_nqiHdkBa5mYnNWVh"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="pt-24 px-gutter pb-12">
+<!-- Hero Section -->
+<section class="relative mb-12 rounded-2xl overflow-hidden glass-panel h-[400px] flex items-center group">
+<div class="scanline"></div>
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent z-10"></div>
+<img class="w-full h-full object-cover object-center" data-alt="A highly detailed 3D digital illustration of a Cyber-Evolved Charizard #001 featuring metallic black scales and glowing cyan internal energy lines. The creature stands in a high-tech obsidian hangar with rain falling softly, catching the neon cyan light from suspended data terminals. The mood is epic and high-fidelity, with atmospheric fog and hyper-realistic textures reflecting the futuristic Neon Syndicate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoKUpC4QpF5-iAKAbrjQzqAFUArf-6xsbx_J-OWGgTdOnCEVQQaoFTs_twz_XqDybNODvODxRZNFvMg9Kq_uwAt9jZD4XkiGV63CafSazh3wsrCVnrxo68CA-m8wu2JQuESNNPrC8IgHp7BTLOV4Ulhc9KCdeIvD2IT6H7uvh1Cpi8VyhB8i0z3Mb2i8BEyHGpmYXFrGdrfl5TD5ifI975CAy5QJW_fZw2bn6FBdVmOoSt73vbBnGp50n_D5i_nqiHdkBa5mYnNWVh"/>
+</div>
+<div class="relative z-20 px-12 max-w-2xl">
+<div class="inline-flex items-center px-3 py-1 bg-primary-container/20 border border-primary-fixed-dim rounded mb-4 animate-pulse">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim mr-2"></span>
+<span class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-widest">Live Auction: Trending Asset</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-white mb-2 neon-glow-text">Cyber-Evolved Charizard #001</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-lg">The cornerstone of the Genesis Collection. Featuring unique holographic metadata and a verified physical vault anchor.</p>
+<div class="flex gap-4">
+<button class="bg-primary-container text-on-primary font-bold px-8 py-3 rounded-lg hover:brightness-110 transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined">local_fire_department</span>
+                            PLACE BID
+                        </button>
+<div class="glass-panel px-6 py-3 rounded-lg flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-outline uppercase">CURRENT VALUE</span>
+<span class="font-headline-sm text-headline-sm text-primary-fixed-dim">124.50 ETH</span>
+</div>
+</div>
+</div>
+</section>
+<div class="flex gap-8">
+<!-- Filters Sidebar -->
+<aside class="w-64 flex-shrink-0 space-y-8">
+<div>
+<h3 class="font-label-md text-label-md text-primary-fixed-dim uppercase tracking-widest mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">tune</span> Filters
+                        </h3>
+<div class="space-y-6">
+<!-- Category -->
+<div class="space-y-3">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-tighter">Category</p>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input checked="" class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Trading Cards</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Numismatics</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant group-hover:text-primary transition-colors">Philately</span>
+</label>
+</div>
+</div>
+<!-- Rarity -->
+<div class="space-y-3">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-tighter">Rarity Grade</p>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="px-2 py-0.5 rounded text-[10px] font-black bg-error/20 text-error border border-error/30">MYTHIC</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input checked="" class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="px-2 py-0.5 rounded text-[10px] font-black bg-tertiary-fixed-dim/20 text-tertiary-fixed-dim border border-tertiary-fixed-dim/30">LEGENDARY</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant bg-surface-container text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="px-2 py-0.5 rounded text-[10px] font-black bg-secondary-container/20 text-secondary-container border border-secondary-container/30">EPIC</span>
+</label>
+</div>
+</div>
+<!-- Price Range -->
+<div class="space-y-3">
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-tighter">Price Range (ETH)</p>
+<div class="flex items-center gap-2">
+<input class="w-full bg-surface-container-low border border-outline-variant rounded p-2 text-label-sm font-label-md text-white" placeholder="Min" type="number"/>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded p-2 text-label-sm font-label-md text-white" placeholder="Max" type="number"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Activity Feed -->
+<div class="glass-panel rounded-xl p-4">
+<h3 class="font-label-sm text-label-sm text-primary-fixed-dim uppercase tracking-widest mb-4">Live Activity</h3>
+<div class="space-y-4">
+<div class="flex gap-3 items-start border-l-2 border-primary-fixed-dim pl-3 py-1">
+<div class="space-y-1">
+<p class="text-body-sm font-body-sm text-white"><span class="text-primary-fixed-dim font-bold">Z_Alpha</span> listed Void Crystal</p>
+<p class="text-[10px] text-outline uppercase font-label-sm">2 MINS AGO</p>
+</div>
+</div>
+<div class="flex gap-3 items-start border-l-2 border-outline-variant/30 pl-3 py-1">
+<div class="space-y-1">
+<p class="text-body-sm font-body-sm text-white"><span class="text-secondary-fixed-dim font-bold">Krypton</span> sold Proto-Coin #02</p>
+<p class="text-[10px] text-outline uppercase font-label-sm">8 MINS AGO</p>
+</div>
+</div>
+<div class="flex gap-3 items-start border-l-2 border-outline-variant/30 pl-3 py-1">
+<div class="space-y-1">
+<p class="text-body-sm font-body-sm text-white"><span class="text-tertiary-fixed-dim font-bold">Loom_9</span> bid 4.2 ETH on Node 44</p>
+<p class="text-[10px] text-outline uppercase font-label-sm">15 MINS AGO</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Asset Grid -->
+<div class="flex-1">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-white">Verified Assets</h2>
+<p class="font-body-sm text-body-sm text-outline">Rare assets from verified elite collectors</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 glass-panel rounded hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-2 glass-panel rounded bg-primary-container/20 border-primary-fixed-dim/40 text-primary-fixed-dim"><span class="material-symbols-outlined">grid_view</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:neon-border holographic-hover">
+<div class="relative aspect-[4/5]">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A cinematic 3D render of a 'Neo-Lugia Proto' trading card. The central figure is a sleek, white cybernetic dragon with ethereal blue translucent wings. The background is a dark, digital nebula with floating geometric prisms and code fragments. The lighting is bioluminescent blue with high-contrast shadows, fitting a professional, futuristic trading card aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoKUpC4QpF5-iAKAbrjQzqAFUArf-6xsbx_J-OWGgTdOnCEVQQaoFTs_twz_XqDybNODvODxRZNFvMg9Kq_uwAt9jZD4XkiGV63CafSazh3wsrCVnrxo68CA-m8wu2JQuESNNPrC8IgHp7BTLOV4Ulhc9KCdeIvD2IT6H7uvh1Cpi8VyhB8i0z3Mb2i8BEyHGpmYXFrGdrfl5TD5ifI975CAy5QJW_fZw2bn6FBdVmOoSt73vbBnGp50n_D5i_nqiHdkBa5mYnNWVh"/>
+<div class="absolute top-4 left-4">
+<span class="px-2 py-1 rounded bg-tertiary-fixed-dim/20 text-tertiary-fixed-dim text-[10px] font-black border border-tertiary-fixed-dim/30 backdrop-blur-md uppercase tracking-wider">LEGENDARY</span>
+</div>
+</div>
+<div class="p-5 border-t border-outline-variant/30">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-headline-sm text-[18px] text-white group-hover:text-primary-fixed-dim transition-colors">Neo-Lugia Proto</h4>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-tighter">By Digital-Archetype</p>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-widest">VALUE</span>
+<span class="font-label-md text-label-md text-primary-fixed-dim">45.20 ETH</span>
+</div>
+<button class="bg-surface-variant hover:bg-primary-container hover:text-on-primary font-bold px-4 py-2 rounded-lg text-label-sm transition-all">VIEW DATA</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:neon-border holographic-hover">
+<div class="relative aspect-[4/5]">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A dark, high-fidelity digital artwork of the 'Obsidian Sovereign' asset. It is a floating, crystalline black crown radiating deep violet pulses of energy. The background is a stark, minimal black void with subtle atmospheric dust motes illuminated by neon violet beams. The visual style is elite, sharp, and highly technical, symbolizing supreme digital rarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoKUpC4QpF5-iAKAbrjQzqAFUArf-6xsbx_J-OWGgTdOnCEVQQaoFTs_twz_XqDybNODvODxRZNFvMg9Kq_uwAt9jZD4XkiGV63CafSazh3wsrCVnrxo68CA-m8wu2JQuESNNPrC8IgHp7BTLOV4Ulhc9KCdeIvD2IT6H7uvh1Cpi8VyhB8i0z3Mb2i8BEyHGpmYXFrGdrfl5TD5ifI975CAy5QJW_fZw2bn6FBdVmOoSt73vbBnGp50n_D5i_nqiHdkBa5mYnNWVh"/>
+<div class="absolute top-4 left-4">
+<span class="px-2 py-1 rounded bg-error/20 text-error text-[10px] font-black border border-error/30 backdrop-blur-md uppercase tracking-wider">MYTHIC</span>
+</div>
+</div>
+<div class="p-5 border-t border-outline-variant/30">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-headline-sm text-[18px] text-white group-hover:text-primary-fixed-dim transition-colors">Obsidian Sovereign</h4>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-tighter">By Vault-Zero</p>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors text-error">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-widest">VALUE</span>
+<span class="font-label-md text-label-md text-primary-fixed-dim">88.00 ETH</span>
+</div>
+<button class="bg-surface-variant hover:bg-primary-container hover:text-on-primary font-bold px-4 py-2 rounded-lg text-label-sm transition-all">VIEW DATA</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:neon-border holographic-hover">
+<div class="relative aspect-[4/5]">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A stylized digital architecture rendering of 'Genesis Node Plot #44'. A floating geometric island of glowing circuits and obsidian structures suspended in a cyan-tinted ether. The lighting features sharp neon cyan outlines and deep atmospheric shadows. The image projects a high-end metaverse real estate aesthetic with extreme detail and technical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoKUpC4QpF5-iAKAbrjQzqAFUArf-6xsbx_J-OWGgTdOnCEVQQaoFTs_twz_XqDybNODvODxRZNFvMg9Kq_uwAt9jZD4XkiGV63CafSazh3wsrCVnrxo68CA-m8wu2JQuESNNPrC8IgHp7BTLOV4Ulhc9KCdeIvD2IT6H7uvh1Cpi8VyhB8i0z3Mb2i8BEyHGpmYXFrGdrfl5TD5ifI975CAy5QJW_fZw2bn6FBdVmOoSt73vbBnGp50n_D5i_nqiHdkBa5mYnNWVh"/>
+<div class="absolute top-4 left-4">
+<span class="px-2 py-1 rounded bg-secondary-container/20 text-secondary-container text-[10px] font-black border border-secondary-container/30 backdrop-blur-md uppercase tracking-wider">EPIC</span>
+</div>
+</div>
+<div class="p-5 border-t border-outline-variant/30">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-headline-sm text-[18px] text-white group-hover:text-primary-fixed-dim transition-colors">Genesis Node Plot #44</h4>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-tighter">By Meta-Corp</p>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-widest">VALUE</span>
+<span class="font-label-md text-label-md text-primary-fixed-dim">12.75 ETH</span>
+</div>
+<button class="bg-surface-variant hover:bg-primary-container hover:text-on-primary font-bold px-4 py-2 rounded-lg text-label-sm transition-all">VIEW DATA</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interactions and holographic effects
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Search bar interaction
+        const searchBar = document.querySelector('input[type="text"]');
+        searchBar.addEventListener('focus', () => {
+            searchBar.parentElement.classList.add('neon-border');
+        });
+        searchBar.addEventListener('blur', () => {
+            searchBar.parentElement.classList.remove('neon-border');
+        });
+    </script>
+</body></html>
