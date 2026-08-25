@@ -1,3 +1,43 @@
+openapi: 3.0.0
+info:
+  title: API Gerenciador de Trocas
+  version: 1.0.0
+  description: API REST para gerenciamento de colecionadores, itens e trocas.
+paths:
+  /api/colecionadores:
+    get:
+      summary: Lista todos os colecionadores
+      responses:
+        '200':
+          description: Sucesso
+    post:
+      summary: Cria um novo colecionador
+      responses:
+        '201':
+          description: Criado com sucesso
+  /api/itens:
+    get:
+      summary: Lista todos os itens cadastrados
+      responses:
+        '200':
+          description: Sucesso
+    post:
+      summary: Cadastra um novo item
+      responses:
+        '201':
+          description: Criado com sucesso
+  /api/propostas:
+    post:
+      summary: Cria uma proposta de troca
+      responses:
+        '201':
+          description: Criada com sucesso
+  /api/propostas/{id}/responder:
+    patch:
+      summary: Aceita ou recusa uma proposta de troca
+      responses:
+        '200':
+          description: Proposta processada com sucesso
 components:
   schemas:
     Colecionador:
@@ -12,15 +52,12 @@ components:
         perfil:
           type: string
           enum: [COLECIONADOR, ADMINISTRADOR]
-
     Item:
       type: object
       properties:
         id:
           type: integer
         titulo:
-          type: string
-        descricao:
           type: string
         fotoUrl:
           type: string
@@ -32,7 +69,6 @@ components:
           enum: [Comum, Raro, Épico, Lendário]
         colecionadorId:
           type: integer
-
     PropostaTroca:
       type: object
       properties:
@@ -53,3 +89,5 @@ components:
         status:
           type: string
           enum: [PENDENTE, ACEITA, RECUSADA]
+
+          
