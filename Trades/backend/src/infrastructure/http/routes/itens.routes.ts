@@ -8,7 +8,7 @@ const controller = ItemFactory.criarController();
  * @swagger
  * /api/itens:
  *   get:
- *     summary: Lista todos os itens ou busca por filtros (ex: colecionadorId)
+ *     summary: "Lista todos os itens ou busca por filtros (ex: colecionadorId)"
  *     tags: [Itens]
  */
 router.get('/itens', (req: Request, res: Response) => controller.listar(req, res));
