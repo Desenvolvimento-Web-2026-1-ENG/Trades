@@ -1,91 +1,74 @@
 <div align="center">
   <img src="assets/tradeslogo.png" width="100%" height="400" alt="Trades Logo">
 </div>
+
 # 🛡️ Trades: O Hub dos Colecionadores
 
 [![GitHub license](https://img.shields.io/github/license/seu-usuario/trades?style=flat-square)](https://github.com/seu-usuario/trades/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-**Trades** é uma plataforma robusta projetada para colecionadores que buscam profissionalismo na gestão de seus itens. De cartas Pokémon a selos e moedas raras, a plataforma facilita a organização de inventários e conecta utilizadores para trocas seguras e inteligentes.
-
-[Explore a Demo] · [Reporte um Bug] · [Solicite uma Feature]
+**Trades** é uma API REST desenvolvida em Node.js e TypeScript projetada para a gestão de colecionáveis e mediação de trocas entre usuários. A plataforma permite o cadastro de colecionadores, controle de inventários e automação no aceite de propostas de troca.
 
 ---
 
 ## 🚀 Sobre o Projeto
 
-Gerir coleções físicas pode ser um desafio logístico. O **Trades** resolve isso centralizando o inventário numa interface intuitiva, permitindo que o utilizador visualize a sua coleção e encontre parceiros de troca com base em interesses mútuos (Matchmaking de itens).
+Projeto desenvolvido para a Avaliação Parcial (P1) da disciplina de Desenvolvimento Web. A API segue os princípios de **Clean Architecture** utilizando o padrão *In-Memory Repository*, garantindo desacoplamento entre a camada de negócio e a infraestrutura.
 
 ### Principais Funcionalidades
 
-* **🗃️ Gestão Multidomínio:** Suporte para diferentes categorias (Pokémon TCG, Numismática, Filatelia).
-* **🔄 Smart Trading:** Sistema de propostas de troca com status em tempo real.
-* **📊 Dashboard de Inventário:** Visão geral da quantidade, raridade e estado de conservação dos itens.
-* **🔍 Busca Avançada:** Filtros por edição, ano, raridade ou valor estimado.
+* **🗃️ Gestão de Colecionadores:** Cadastro e consulta de perfis na plataforma.
+* **📦 Controle de Inventário:** Cadastro de itens vinculados a colecionadores específicos.
+* **🔄 Sistema de Trocas:** Criação de propostas de troca entre dois colecionadores.
+* **⚡ Transferência Automática:** Atualização instantânea da propriedade do item (`colecionadorId`) ao aceitar uma proposta (`PATCH`).
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-Este projeto foi construído utilizando as melhores práticas de desenvolvimento de software, visando escalabilidade e performance:
-
-* **Frontend:** [Inserir Tecnologia, ex: Next.js]
-* **Backend:** [Inserir Tecnologia, ex: Node.js / NestJS]
-* **Banco de Dados:** [Inserir Tecnologia, ex: PostgreSQL / MongoDB]
-* **Autenticação:** [Inserir Tecnologia, ex: Clerk / Firebase]
-* **Estilização:** [Inserir Tecnologia, ex: Tailwind CSS]
+* **Runtime:** Node.js
+* **Linguagem:** TypeScript
+* **Framework Web:** Express
+* **Documentação:** Swagger UI (`swagger-ui-express`)
+* **Arquitetura:** Clean Architecture (Services, Repositories, Controllers e Factories)
 
 ---
 
-## 📐 Arquitetura e Boas Práticas
+## 📖 Documentação da API (Swagger)
 
-Para demonstrar a qualidade do código aos recrutadores, o projeto segue:
-* **Clean Code:** Nomes semânticos e funções de responsabilidade única.
-* **Arquitetura:** [Ex: Clean Architecture / Hexagonal] para desacoplamento de regras de negócio.
-* **Mobile First:** Interface totalmente responsiva.
-* **Versionamento:** Commits semânticos (Conventional Commits).
+Com o servidor rodando, a documentação interativa com todas as rotas e esquemas pode ser acessada em:
+
+👉 **`http://localhost:3000/docs`**
+
+### Rotas Principais
+
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `POST` | `/api/colecionadores` | Cadastra um novo colecionador |
+| `GET` | `/api/colecionadores` | Lista todos os colecionadores |
+| `POST` | `/api/itens` | Cadastra um novo item de coleção |
+| `GET` | `/api/itens/:id` | Busca detalhes de um item por ID |
+| `POST` | `/api/propostas` | Cria uma nova proposta de troca |
+| `PATCH` | `/api/propostas/:id/responder` | Aceita ou recusa uma proposta de troca |
 
 ---
 
 ## ⚙️ Como Executar o Projeto
 
-1.  **Clone o repositório:**
-    ```bash
-    git clone https://github.com/seu-usuario/trades.git
-    ```
-2.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
-3.  **Configure as variáveis de ambiente:**
-    * Crie um arquivo `.env` na raiz e adicione suas chaves seguindo o `.env.example`.
-4.  **Inicie o servidor de desenvolvimento:**
-    ```bash
-    npm run dev
-    ```
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/SEU-USUARIO/trades.git
+   ```
 
----
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-## 🎯 Roadmap de Evolução
+3. **Inicie o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
 
-- [ ] Integração com APIs externas para precificação em tempo real.
-- [ ] Sistema de reputação para utilizadores (avaliações após trocas).
-- [ ] Chat interno para negociação.
-- [ ] Geração de relatórios de coleção em PDF/CSV.
-
----
-
-## 📄 Licença
-
-Distribuído sob a licença MIT. Veja o ficheiro `LICENSE` para mais informações.
-
----
-
-## ✉️ Contacto
-
-**Seu Nome** - [LinkedIn](https://linkedin.com/in/seu-perfil) - seu-email@exemplo.com
-
-Link do Projeto: [https://github.com/seu-usuario/trades](https://github.com/seu-usuario/trades)
-
----
-*Desenvolvido com ☕ e foco em colecionismo.*
+4. **Verifique o status do servidor:**
+   Acesse `http://localhost:3000/api/status` no seu navegador ou Postman.
