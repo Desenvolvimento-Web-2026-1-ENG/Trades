@@ -133,3 +133,4 @@ npm run dev
 **Acesse a documentação no navegador:**
 
 http://localhost:3000/docs
+
