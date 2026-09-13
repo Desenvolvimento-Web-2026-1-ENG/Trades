@@ -4,6 +4,16 @@ import { PropostaTrocaService } from '@services/PropostaTrocaService.js';
 export class PropostaTrocaController {
   constructor(private propostaService: PropostaTrocaService) {}
 
+  // MÉTODO DISPONIBILIZADO PARA A ROTA GET:
+  listar(req: Request, res: Response) {
+    try {
+      const propostas = this.propostaService.listarPropostas();
+      return res.status(200).json(propostas);
+    } catch (error: any) {
+      return res.status(400).json({ mensagem: error.message });
+    }
+  }
+
   criar(req: Request, res: Response) {
     try {
       const proposta = this.propostaService.criarProposta(req.body);

@@ -22,8 +22,10 @@ interface Item {
 
 interface Proposta {
   id: number;
-  solicitanteId: number;
-  destinatarioId: number;
+  solicitanteId?: number;
+  destinatarioId?: number;
+  idSolicitante?: number;
+  idDestinatario?: number;
   status: string;
 }
 
@@ -40,21 +42,19 @@ export default function App() {
   const [formItem, setFormItem] = useState({ titulo: '', fotoUrl: '', estadoConservacao: 'Novo', raridade: 'Raro', colecionadorId: '' });
   const [formProposta, setFormProposta] = useState({ solicitanteId: '', destinatarioId: '', itemSolicitanteId: '', itemDestinatarioId: '' });
 
-  // Carregar dados ao iniciar ou mudar de aba
+  // Carregar dados ao iniciar
   useEffect(() => {
     carregarColecionadores();
     carregarItens();
     carregarPropostas();
   }, []);
 
- const carregarColecionadores = async () => {
+  const carregarColecionadores = async () => {
     try {
       const res = await axios.get(`${API_BASE}/colecionadores`);
-      // Trata caso a API retorne um array direto ou dentro de um objeto { data: [...] } ou { colecionadores: [...] }
       const dados = Array.isArray(res.data) 
         ? res.data 
         : (res.data.colecionadores || res.data.data || []);
-      
       setColecionadores(dados);
     } catch (e) {
       console.error('Erro ao buscar colecionadores:', e);
@@ -64,28 +64,39 @@ export default function App() {
   const carregarItens = async () => {
     try {
       const res = await axios.get(`${API_BASE}/itens`);
-      setItens(res.data);
-    } catch (e) { console.error('Erro ao buscar itens:', e); }
+      const dados = Array.isArray(res.data) 
+        ? res.data 
+        : (res.data.itens || res.data.data || []);
+      setItens(dados);
+    } catch (e) { 
+      console.error('Erro ao buscar itens:', e); 
+    }
   };
 
   const carregarPropostas = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/propostas`);
-      setPropostas(res.data);
-    } catch (e) { console.error('Erro ao buscar propostas:', e); }
-  };
+  try {
+    const res = await axios.get(`${API_BASE}/propostas`);
+    console.log('Dados recebidos do GET /propostas:', res.data);
+
+    // Mapeia caso a API devolva um Array direto, dentro de data, propostas, rows ou content
+    const dados = Array.isArray(res.data) 
+      ? res.data 
+      : (res.data.propostas || res.data.data || res.data.rows || res.data.content || []);
+      
+    setPropostas(dados);
+  } catch (e) { 
+    console.error('Erro ao buscar propostas:', e); 
+  }
+};
+
 
   // Submissões de Formulários
- const handleCadastrarColecionador = async (e: React.FormEvent) => {
+  const handleCadastrarColecionador = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const resposta = await axios.post(`${API_BASE}/colecionadores`, formColecionador);
       console.log('Colecionador cadastrado com sucesso:', resposta.data);
-      
-      // Limpa o formulário
       setFormColecionador({ nome: '', email: '', perfil: 'COLECIONADOR' });
-      
-      // Recarrega a lista
       await carregarColecionadores();
     } catch (e: any) {
       console.error('Erro ao cadastrar colecionador:', e);
@@ -95,29 +106,66 @@ export default function App() {
 
   const handleCadastrarItem = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post(`${API_BASE}/itens`, {
-      ...formItem,
-      colecionadorId: Number(formItem.colecionadorId)
-    });
-    setFormItem({ titulo: '', fotoUrl: '', estadoConservacao: 'Novo', raridade: 'Raro', colecionadorId: '' });
-    carregarItens();
+    try {
+      await axios.post(`${API_BASE}/itens`, {
+        ...formItem,
+        colecionadorId: Number(formItem.colecionadorId)
+      });
+      setFormItem({ titulo: '', fotoUrl: '', estadoConservacao: 'Novo', raridade: 'Raro', colecionadorId: '' });
+      await carregarItens();
+    } catch (e: any) {
+      console.error('Erro ao cadastrar item:', e);
+      alert(`Erro ao cadastrar item: ${e.response?.data?.mensagem || e.message}`);
+    }
   };
 
-  const handleCriarProposta = async (e: React.FormEvent) => {
+ const handleCriarProposta = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post(`${API_BASE}/propostas`, {
-      solicitanteId: Number(formProposta.solicitanteId),
-      destinatarioId: Number(formProposta.destinatarioId),
-      itensSolicitanteIds: [Number(formProposta.itemSolicitanteId)],
-      itensDestinatarioIds: [Number(formProposta.itemDestinatarioId)]
-    });
-    setFormProposta({ solicitanteId: '', destinatarioId: '', itemSolicitanteId: '', itemDestinatarioId: '' });
-    carregarPropostas();
+    try {
+      const solId = Number(formProposta.solicitanteId);
+      const destId = Number(formProposta.destinatarioId);
+      const itemSolId = Number(formProposta.itemSolicitanteId);
+      const itemDestId = Number(formProposta.itemDestinatarioId);
+
+      // Payload exatamente no formato esperado pelo CriarPropostaTrocaDTO
+      const payload = {
+        solicitanteId: solId,
+        destinatarioId: destId,
+        itensSolicitanteIds: [itemSolId],
+        itensDestinatarioIds: [itemDestId],
+        // DTOs legados/alternativos como fallback
+        idSolicitante: solId,
+        idDestinatario: destId,
+        itemSolicitanteId: itemSolId,
+        itemDestinatarioId: itemDestId
+      };
+
+      const res = await axios.post(`${API_BASE}/propostas`, payload);
+      console.log('Proposta criada:', res.data);
+
+      setFormProposta({ solicitanteId: '', destinatarioId: '', itemSolicitanteId: '', itemDestinatarioId: '' });
+      
+      await carregarPropostas();
+      alert('Proposta criada com sucesso!');
+    } catch (e: any) {
+      console.error('Erro ao criar proposta:', e);
+      alert(`Erro ao criar proposta: ${e.response?.data?.mensagem || e.response?.data?.error || e.message}`);
+    }
   };
 
   const handleAceitarProposta = async (id: number) => {
-    await axios.patch(`${API_BASE}/propostas/${id}/responder`, { aceitar: true });
-    carregarPropostas();
+    try {
+      await axios.patch(`${API_BASE}/propostas/${id}/responder`, { 
+        aceitar: true, 
+        aceito: true, 
+        status: 'ACEITA' 
+      });
+      alert('Troca aceita com sucesso!');
+      await carregarPropostas();
+    } catch (e: any) {
+      console.error('Erro ao aceitar proposta:', e);
+      alert(`Erro ao aceitar proposta: ${e.response?.data?.mensagem || e.message}`);
+    }
   };
 
   return (
@@ -164,7 +212,7 @@ export default function App() {
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-indigo-500"
                   required
                 />
-                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition">
+                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition cursor-pointer">
                   Cadastrar
                 </button>
               </form>
@@ -223,7 +271,7 @@ export default function App() {
                   className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
                   required
                 />
-                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition">
+                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition cursor-pointer">
                   Cadastrar Item
                 </button>
               </form>
@@ -284,7 +332,7 @@ export default function App() {
                     required
                   />
                 </div>
-                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition">
+                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition cursor-pointer">
                   Enviar Proposta
                 </button>
               </form>
@@ -292,27 +340,33 @@ export default function App() {
               <div className="md:col-span-2 bg-slate-800 p-6 rounded-xl border border-slate-700">
                 <h2 className="text-lg font-semibold text-indigo-300 mb-4">Propostas Registradas</h2>
                 <div className="space-y-3">
-                  {propostas.map((p) => (
-                    <div key={p.id} className="flex justify-between items-center bg-slate-900 p-4 rounded-lg border border-slate-700/50">
-                      <div>
-                        <span className="text-xs text-indigo-400 font-mono">Proposta #{p.id}</span>
-                        <p className="text-sm font-medium">Solicitante #{p.solicitanteId} ➔ Destinatário #{p.destinatarioId}</p>
-                        <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1 ${
-                          p.status === 'ACEITA' || p.status === 'CONCLUIDA' ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-700' : 'bg-amber-900/50 text-amber-400 border border-amber-700'
-                        }`}>
-                          {p.status || 'PENDENTE'}
-                        </span>
+                  {propostas.map((p, idx) => {
+                    const solId = p.solicitanteId || p.idSolicitante || '?';
+                    const destId = p.destinatarioId || p.idDestinatario || '?';
+                    const status = p.status || 'PENDENTE';
+
+                    return (
+                      <div key={p.id || idx} className="flex justify-between items-center bg-slate-900 p-4 rounded-lg border border-slate-700/50">
+                        <div>
+                          <span className="text-xs text-indigo-400 font-mono">Proposta #{p.id || idx + 1}</span>
+                          <p className="text-sm font-medium">Solicitante #{solId} ➔ Destinatário #{destId}</p>
+                          <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1 ${
+                            status === 'ACEITA' || status === 'CONCLUIDA' ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-700' : 'bg-amber-900/50 text-amber-400 border border-amber-700'
+                          }`}>
+                            {status}
+                          </span>
+                        </div>
+                        {status !== 'ACEITA' && status !== 'CONCLUIDA' && (
+                          <button
+                            onClick={() => handleAceitarProposta(p.id || idx + 1)}
+                            className="bg-emerald-600 hover:bg-emerald-500 text-xs font-bold px-3 py-2 rounded-md transition cursor-pointer text-white"
+                          >
+                            Aceitar Troca
+                          </button>
+                        )}
                       </div>
-                      {p.status !== 'ACEITA' && p.status !== 'CONCLUIDA' && (
-                        <button
-                          onClick={() => handleAceitarProposta(p.id)}
-                          className="bg-emerald-600 hover:bg-emerald-500 text-xs font-bold px-3 py-2 rounded-md transition"
-                        >
-                          Aceitar Troca
-                        </button>
-                      )}
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </div>
