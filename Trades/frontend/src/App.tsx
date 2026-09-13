@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = '/api';
 
 // Interfaces de Tipo
 interface Colecionador {
@@ -47,11 +47,18 @@ export default function App() {
     carregarPropostas();
   }, []);
 
-  const carregarColecionadores = async () => {
+ const carregarColecionadores = async () => {
     try {
       const res = await axios.get(`${API_BASE}/colecionadores`);
-      setColecionadores(res.data);
-    } catch (e) { console.error('Erro ao buscar colecionadores:', e); }
+      // Trata caso a API retorne um array direto ou dentro de um objeto { data: [...] } ou { colecionadores: [...] }
+      const dados = Array.isArray(res.data) 
+        ? res.data 
+        : (res.data.colecionadores || res.data.data || []);
+      
+      setColecionadores(dados);
+    } catch (e) {
+      console.error('Erro ao buscar colecionadores:', e);
+    }
   };
 
   const carregarItens = async () => {
@@ -69,11 +76,21 @@ export default function App() {
   };
 
   // Submissões de Formulários
-  const handleCadastrarColecionador = async (e: React.FormEvent) => {
+ const handleCadastrarColecionador = async (e: React.FormEvent) => {
     e.preventDefault();
-    await axios.post(`${API_BASE}/colecionadores`, formColecionador);
-    setFormColecionador({ nome: '', email: '', perfil: 'COLECIONADOR' });
-    carregarColecionadores();
+    try {
+      const resposta = await axios.post(`${API_BASE}/colecionadores`, formColecionador);
+      console.log('Colecionador cadastrado com sucesso:', resposta.data);
+      
+      // Limpa o formulário
+      setFormColecionador({ nome: '', email: '', perfil: 'COLECIONADOR' });
+      
+      // Recarrega a lista
+      await carregarColecionadores();
+    } catch (e: any) {
+      console.error('Erro ao cadastrar colecionador:', e);
+      alert(`Erro ao cadastrar: ${e.response?.data?.mensagem || e.message}`);
+    }
   };
 
   const handleCadastrarItem = async (e: React.FormEvent) => {

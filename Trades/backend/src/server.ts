@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import cors from "cors"; // <--- Adicionado
+import cors from "cors";
 import itemRoutes from "./routes/item.routes.js";
 import propostaRoutes from "./routes/proposta.routes.js";
 import colecionadorRoutes from "./routes/colecionador.routes.js";
@@ -8,7 +8,12 @@ const PORTA = 3000;
 const app = express();
 
 // Middlewares
-app.use(cors()); // <--- Libera o acesso para o React
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['*']
+}));
+
 app.use(express.json());
 
 // Rotas principais da API
