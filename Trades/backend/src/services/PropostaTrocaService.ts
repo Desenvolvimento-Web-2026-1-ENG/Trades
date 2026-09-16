@@ -9,13 +9,22 @@ export class PropostaTrocaService {
     private itemRepository: ItemRepositoryInMemory
   ) {}
 
+  // MÉTODO CONECTADO AO REPOSITÓRIO:
+  listarPropostas(): PropostaTroca[] {
+    return this.propostaRepository.listarTodas();
+  }
+
   criarProposta(dados: CriarPropostaTrocaDTO): PropostaTroca {
-    // Valida se os itens do solicitantes realmente pertencem a ele
-    const itensSolicitante = dados.itensSolicitanteIds.map(id => this.itemRepository.buscarPorId(id));
-    const pertenceAoSolicitante = itensSolicitante.every(item => item && item.colecionadorId === dados.solicitanteId);
+    const solId = Number(dados.solicitanteId);
+    const itensSolicitanteIds = (dados.itensSolicitanteIds || []).map(Number);
+
+    const itensSolicitante = itensSolicitanteIds.map(id => this.itemRepository.buscarPorId(id));
+    const pertenceAoSolicitante = itensSolicitante.every(
+      item => item && Number(item.colecionadorId) === solId
+    );
 
     if (!pertenceAoSolicitante) {
-      throw new Error('Algum item oferecido não pertence ao solicitante.');
+      throw new Error('Algum item oferecido não pertence ao solicitante informado.');
     }
 
     return this.propostaRepository.criar(dados);
@@ -30,7 +39,6 @@ export class PropostaTrocaService {
       return this.propostaRepository.atualizar(propostaId, { status: 'RECUSADA' })!;
     }
 
-    // Regra principal: Troca automática de propriedade dos itens
     proposta.itensSolicitanteIds.forEach(itemId => {
       this.itemRepository.atualizar(itemId, { colecionadorId: proposta.destinatarioId });
     });
