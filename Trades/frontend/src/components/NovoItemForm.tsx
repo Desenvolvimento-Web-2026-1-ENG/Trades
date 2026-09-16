@@ -93,6 +93,7 @@ export const NovoItemForm: React.FC<FormProps> = ({ usuarioLogadoId, onSubmit, o
       await axios.post(`${API_BASE}/itens`, {
         titulo: titulo.trim(),
         fotoUrl: fotoUrl.trim(),
+        raridade,
         colecionadorId: idFinal ? Number(idFinal) : undefined
       });
 
@@ -136,18 +137,27 @@ export const NovoItemForm: React.FC<FormProps> = ({ usuarioLogadoId, onSubmit, o
           <div className="relative border-2 border-dashed border-slate-800 hover:border-cyan-500/50 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-[#060913]/60 transition min-h-[300px] group">
             {fotoUrl ? (
               <div className="w-full flex flex-col items-center space-y-3">
-                <img
-                  src={fotoUrl}
-                  alt="Preview do Ativo"
-                  className="max-h-52 max-w-full object-contain rounded-xl drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300?text=URL+Invalida';
-                  }}
-                />
+                <div className="relative max-h-52 max-w-full rounded-xl overflow-hidden border border-slate-800/70">
+                  <img
+                    src={fotoUrl}
+                    alt="Preview do Ativo"
+                    className="max-h-52 max-w-full object-contain rounded-xl drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300?text=URL+Invalida';
+                    }}
+                  />
+                  <span className="absolute top-2 left-2 rounded border border-cyan-200/70 bg-cyan-400/90 px-2 py-1 text-[9px] font-black uppercase tracking-wider text-slate-950">
+                    {raridade ? raridade.toUpperCase() : 'ITEM'}
+                  </span>
+                </div>
+                <div className="w-full flex items-center justify-between px-1 text-[10px] font-mono text-cyan-400">
+                  <span>#{raridade ? raridade.toUpperCase() : 'ITEM'}</span>
+                  <span>PREVIEW</span>
+                </div>
                 <button
                   type="button"
                   onClick={() => setFotoUrl('')}
-                  className="text-xs text-rose-400 hover:underline cursor-pointer font-mono"
+                  className="text-xs text-rose-400 hover:underline active:scale-[0.97] transition-all duration-150 cursor-pointer font-mono"
                 >
                   Remover Foto
                 </button>
@@ -160,7 +170,7 @@ export const NovoItemForm: React.FC<FormProps> = ({ usuarioLogadoId, onSubmit, o
                 <p className="text-xs font-semibold text-white mb-1">Selecione ou Arraste a Imagem</p>
                 <p className="text-[10px] text-slate-500 max-w-[180px] mb-4">PNG, JPG ou GIF</p>
                 
-                <label className="bg-[#131d31] hover:bg-slate-800 text-white font-bold px-4 py-2 rounded-xl border border-slate-700 text-xs cursor-pointer transition">
+                <label className="bg-[#131d31] hover:bg-slate-800 active:scale-[0.97] text-white font-bold px-4 py-2 rounded-xl border border-slate-700 text-xs cursor-pointer transition-all duration-150">
                   Buscar Arquivo
                   <input
                     type="file"
@@ -257,7 +267,7 @@ export const NovoItemForm: React.FC<FormProps> = ({ usuarioLogadoId, onSubmit, o
                   key={rar}
                   type="button"
                   onClick={() => setRaridade(rar)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition cursor-pointer border ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold active:scale-[0.97] transition-all duration-150 cursor-pointer border ${
                     raridade === rar
                       ? 'border-cyan-400 bg-cyan-400/10 text-cyan-400'
                       : 'border-slate-800 bg-[#060913] text-slate-400 hover:text-slate-200'
@@ -313,7 +323,7 @@ export const NovoItemForm: React.FC<FormProps> = ({ usuarioLogadoId, onSubmit, o
           <button
             type="submit"
             disabled={carregando}
-            className="w-full bg-cyan-400 hover:bg-cyan-300 disabled:opacity-50 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition shadow-[0_0_20px_rgba(6,182,212,0.4)] cursor-pointer mt-2"
+            className="w-full bg-cyan-400 hover:bg-cyan-300 active:scale-[0.97] disabled:opacity-50 text-slate-950 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest transition-all duration-150 shadow-[0_0_20px_rgba(6,182,212,0.4)] cursor-pointer mt-2"
           >
             {carregando ? 'Cadastrando...' : 'Cadastrar Item'}
           </button>
@@ -321,7 +331,7 @@ export const NovoItemForm: React.FC<FormProps> = ({ usuarioLogadoId, onSubmit, o
             <button
               type="button"
               onClick={onCancel}
-              className="w-full text-xs text-slate-400 hover:text-slate-200 transition cursor-pointer"
+              className="w-full text-xs text-slate-400 hover:text-slate-200 active:scale-[0.97] transition-all duration-150 cursor-pointer"
             >
               Cancelar
             </button>

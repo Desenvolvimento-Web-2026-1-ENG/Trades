@@ -3,6 +3,8 @@ import axios from 'axios';
 import { LoginForm } from './components/LoginForm';
 import { NovoItemForm } from './components/NovoItemForm';
 import { MeuInventario } from './components/MeuInventario';
+import { ItemCard } from './components/ItemCard';
+import { ParticleReveal } from './components/canvasui/ParticleReveal';
 
 const API_BASE = '/api';
 
@@ -193,7 +195,7 @@ export default function App() {
   });
 
   return (
-    <div className="flex h-screen bg-[#090d14] text-slate-200 font-sans overflow-hidden">
+    <div className="site-shell flex h-screen bg-[#090d14] text-slate-200 font-sans overflow-hidden">
       
       {/* BARRA LATERAL ESQUERDA (SIDEBAR) */}
       <aside className="w-64 bg-[#0d121d] border-r border-slate-800/80 flex flex-col justify-between p-5">
@@ -210,18 +212,18 @@ export default function App() {
           </div>
 
           {/* Botão Nova Proposta */}
-          <button 
+          <button
             onClick={() => setAbaAtiva('propostas')}
-            className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold py-2.5 px-4 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 transition cursor-pointer"
+            className="group w-full bg-cyan-400 hover:bg-cyan-300 active:scale-[0.97] text-slate-950 font-bold py-2.5 px-4 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 transition-all duration-150 cursor-pointer"
           >
-            <span>+</span> Nova Proposta
+            <span className="transition-transform duration-150 group-hover:translate-x-0.5">+</span> Nova Proposta
           </button>
 
           {/* Menu de Navegação */}
           <nav className="space-y-1 text-sm">
             <button
               onClick={() => setAbaAtiva('painel')}
-              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-150 active:scale-[0.97] ${
                 abaAtiva === 'painel' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
               }`}
             >
@@ -230,7 +232,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setAbaAtiva('propostas')}
-              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-150 active:scale-[0.97] ${
                 abaAtiva === 'propostas' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
               }`}
             >
@@ -239,7 +241,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setAbaAtiva('inventario')}
-              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-150 active:scale-[0.97] ${
                 abaAtiva === 'inventario' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
               }`}
             >
@@ -248,7 +250,7 @@ export default function App() {
             </button>
             <button
               onClick={() => setAbaAtiva('novoItem')}
-              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition-all duration-150 active:scale-[0.97] ${
                 abaAtiva === 'novoItem' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
               }`}
             >
@@ -259,10 +261,10 @@ export default function App() {
         </div>
 
         {/* Rodapé da Sidebar */}
-        <div className="pt-4 border-t border-slate-800/60 space-y-2 text-xs text-slate-400">
+        <div className="pt-4 space-y-2 text-xs text-slate-400 before:block before:h-px before:w-full before:bg-gradient-to-r before:from-transparent before:via-slate-800 before:to-transparent">
           <button 
             onClick={() => setUsuarioLogado(null)} 
-            className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+            className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-rose-400 hover:bg-rose-500/10 active:scale-[0.97] transition-all duration-150 cursor-pointer"
           >
             <span>🚪</span>
             <span>SAIR</span>
@@ -274,7 +276,7 @@ export default function App() {
       <div className="flex-1 flex flex-col overflow-y-auto">
         
         {/* Header Superior */}
-        <header className="h-16 border-b border-slate-800/80 px-8 flex items-center justify-between bg-[#0b0f19]/50 backdrop-blur-sm sticky top-0 z-10">
+        <header className="h-16 px-8 flex items-center justify-between bg-[#0b0f19]/50 backdrop-blur-sm sticky top-0 z-10 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-slate-800 after:to-transparent">
           <div className="w-96 relative">
             <input
               type="text"
@@ -288,7 +290,10 @@ export default function App() {
 
           <div className="flex items-center space-x-4">
             <span className="flex items-center space-x-2 text-xs bg-[#121824] border border-slate-800 px-3 py-1.5 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+              </span>
               <span className="text-slate-400">AO VIVO</span>
             </span>
             
@@ -300,7 +305,21 @@ export default function App() {
         </header>
 
         {/* Conteúdo Dinâmico */}
-        <div className="p-8 space-y-8 flex-1">
+        <ParticleReveal
+          className="canvas-panel-shell relative flex-1 min-h-0 overflow-hidden"
+          radius={220}
+          softness={0.9}
+          size={1.5}
+          scatter={5}
+          drift={0.2}
+          aberration={0}
+          bend={0}
+          fade={0.18}
+          threshold={0.3}
+          background="#090d14"
+          smoothing={0.35}
+        >
+        <div className="relative z-10 p-8 space-y-8 min-h-full">
           <div>
             <span className="text-xs font-mono uppercase text-cyan-400 tracking-wider">MERCADO GLOBAL</span>
             <h2 className="text-2xl font-bold text-white tracking-tight">Painel Terminal</h2>
@@ -328,32 +347,12 @@ export default function App() {
               <h3 className="text-base font-semibold text-slate-200">Tendências Agora</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {itensFiltrados.map((item) => (
-                  <div key={item.id} className="bg-[#121824] border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition space-y-3">
-                    <div className="w-full h-40 rounded-lg bg-[#090d14] overflow-hidden flex items-center justify-center border border-slate-800/50">
-                      {item.fotoUrl ? (
-                        <img src={item.fotoUrl} alt={item.titulo} className="w-full h-full object-cover" />
-                      ) : (
-                        <span className="text-3xl">📦</span>
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between text-[10px] text-cyan-400 font-mono mb-1">
-                        <span>#{item.raridade?.toUpperCase() || 'ITEM'}</span>
-                        <span>DONO #{item.colecionadorId}</span>
-                      </div>
-                      <h4 className="font-bold text-slate-100 text-sm truncate">{item.titulo}</h4>
-                      <p className="text-xs text-slate-400">{item.estadoConservacao || 'Conservado'}</p>
-                      {item.colecionadorId !== usuarioLogado.id && (
-                        <button
-                          type="button"
-                          onClick={() => handleOferecerProposta(item)}
-                          className="w-full mt-3 bg-cyan-400/10 hover:bg-cyan-400/20 text-cyan-400 border border-cyan-400/30 text-xs font-bold px-3 py-2 rounded-lg transition cursor-pointer"
-                        >
-                          Oferecer proposta
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                  <ItemCard
+                    key={item.id}
+                    item={item}
+                    mostrarDono
+                    onOferecerProposta={Number(item.colecionadorId) !== usuarioLogado.id ? () => handleOferecerProposta(item) : undefined}
+                  />
                 ))}
               </div>
             </div>
@@ -367,7 +366,7 @@ export default function App() {
           {/* ABA PROPOSTAS */}
           {abaAtiva === 'propostas' && (
             <div className="space-y-6">
-              <div className="flex flex-col gap-5 border-b border-slate-800/80 pb-5 lg:flex-row lg:items-end lg:justify-between">
+              <div className="flex flex-col gap-5 pb-5 lg:flex-row lg:items-end lg:justify-between after:block after:h-px after:w-full after:bg-gradient-to-r after:from-transparent after:via-slate-800 after:to-transparent">
                 <div>
                   <span className="text-xs font-mono uppercase text-cyan-400 tracking-wider">CENTRAL DE NEGOCIAÇÕES</span>
                   <h2 className="text-2xl font-bold text-white tracking-tight">Propostas de troca</h2>
@@ -384,7 +383,7 @@ export default function App() {
                       key={valor}
                       type="button"
                       onClick={() => setFiltroPropostas(valor as typeof filtroPropostas)}
-                      className={`rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
+                      className={`rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-wider active:scale-[0.97] transition-all duration-150 cursor-pointer ${
                         filtroPropostas === valor
                           ? 'bg-cyan-400 text-slate-950'
                           : 'bg-[#121824] text-slate-400 border border-slate-800 hover:text-slate-200'
@@ -444,7 +443,7 @@ export default function App() {
                     </select>
                   </div>
 
-                  <button type="submit" className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold p-2.5 rounded-lg text-xs transition cursor-pointer">
+                  <button type="submit" className="w-full bg-cyan-400 hover:bg-cyan-300 active:scale-[0.97] text-slate-950 font-bold p-2.5 rounded-lg text-xs transition-all duration-150 cursor-pointer">
                     Enviar proposta
                   </button>
                 </form>
@@ -467,7 +466,7 @@ export default function App() {
                         : 'text-amber-400 bg-amber-500/10 border-amber-500/20';
 
                     return (
-                      <div key={p.id || idx} className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                      <div key={p.id || idx} className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl flex flex-col gap-4 md:flex-row md:items-center md:justify-between transition-all duration-300 ease-out hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(6,182,212,0.15)] hover:-translate-y-1">
                         <div>
                           <div className="flex items-center gap-3 mb-2">
                             <span className="text-[10px] text-cyan-400 font-mono uppercase">Proposta #{p.id || idx + 1}</span>
@@ -483,7 +482,7 @@ export default function App() {
                             <button
                               type="button"
                               onClick={() => handleAceitarProposta(p.id || idx + 1)}
-                              className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 text-xs font-bold px-4 py-2 rounded-lg transition cursor-pointer"
+                              className="bg-emerald-500/20 hover:bg-emerald-500/30 active:scale-[0.97] text-emerald-400 border border-emerald-500/40 text-xs font-bold px-4 py-2 rounded-lg transition-all duration-150 cursor-pointer"
                             >
                               Aceitar
                             </button>
@@ -509,12 +508,13 @@ export default function App() {
             />
           )}
         </div>
+        </ParticleReveal>
       </div>
 
       {/* PAINEL LATERAL DIREITO (COLECIONADORES) */}
       <aside className="w-80 bg-[#0d121d] border-l border-slate-800/80 p-6 flex flex-col justify-between overflow-y-auto">
         <div className="space-y-4">
-          <div className="flex justify-between items-center pb-2 border-b border-slate-800/60">
+          <div className="flex justify-between items-center pb-2 after:block after:absolute after:bottom-0 after:left-0 after:right-0 after:h-px after:bg-gradient-to-r after:from-transparent after:via-slate-800 after:to-transparent relative">
             <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Colecionadores</h3>
             <span className="text-[10px] bg-slate-800 text-cyan-400 px-2 py-0.5 rounded-full font-mono">{colecionadores.length}</span>
           </div>

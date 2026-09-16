@@ -28,13 +28,13 @@ export const PropostaCard = ({ proposta, onResponder }: PropostaCardProps) => (
       <div className="flex gap-2 mt-4">
         <button
           onClick={() => onResponder(proposta.id, true)}
-          className="flex-1 bg-emerald-500 hover:bg-emerald-400 text-black font-bold py-1.5 rounded text-xs transition"
+          className="flex-1 bg-emerald-500 hover:bg-emerald-400 active:scale-[0.97] text-black font-bold py-1.5 rounded text-xs transition-all duration-150"
         >
           ACEITAR
         </button>
         <button
           onClick={() => onResponder(proposta.id, false)}
-          className="flex-1 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 font-bold py-1.5 rounded text-xs transition"
+          className="flex-1 bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 active:scale-[0.97] font-bold py-1.5 rounded text-xs transition-all duration-150"
         >
           RECUSAR
         </button>

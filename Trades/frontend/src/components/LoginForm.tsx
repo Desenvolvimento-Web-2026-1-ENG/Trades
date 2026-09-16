@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { AtSign, Lock, Eye, EyeOff, UserCheck, UserPlus, LogIn } from 'lucide-react';
+import { AtSign, Lock, Eye, EyeOff, UserPlus, LogIn } from 'lucide-react';
+import { ForceField } from './canvasui/ForceField';
 import tradesLogo from '../../../../docs/assets/tradeslogo2.png';
 
 const API_BASE = '/api';
@@ -72,6 +73,33 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
   };
 
   return (
+    <ForceField
+      className="min-h-screen"
+      shape="hexagon"
+      cellScale={16}
+      lineWidth={0.03}
+      gridOpacity={0.12}
+      gridReveal="both"
+      gridRevealStrength={1.2}
+      gridRevealRadius={240}
+      gridFade={0.4}
+      flowIntensity={0.15}
+      flowSpeed={0.35}
+      flashIntensity={0.08}
+      edgeGlow={0.25}
+      hoverGlow={0.3}
+      hoverRadius={300}
+      hoverCharge={1.4}
+      rippleIntensity={0.12}
+      rippleSpeed={0.5}
+      rippleBlend={1}
+      refraction={20}
+      aberration={1.5}
+      haze={0.2}
+      tint={0.05}
+      bloom={0.8}
+      grain={0.12}
+    >
     <div className="min-h-screen bg-[#060812] text-slate-300 flex flex-col justify-between items-center p-6 font-sans relative overflow-hidden">
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[150px] pointer-events-none" />
 
@@ -83,33 +111,6 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
             className="w-80 max-w-full h-auto object-contain filter drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]" 
           />
         </div>
-
-        {/* ATALHOS RÁPIDOS DE LOGIN PARA TESTE DE DUAS CONTAS */}
-        {modo === 'login' && (
-          <div className="w-full bg-[#0a0f1d] border border-cyan-500/30 rounded-2xl p-4 text-center space-y-2">
-            <p className="text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider flex items-center justify-center gap-2">
-              <UserCheck className="w-4 h-4" /> Selecione uma conta para teste
-            </p>
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <button
-                type="button"
-                onClick={() => onLogin('trader@hub.com')}
-                className="bg-[#060913] hover:bg-cyan-500/10 border border-slate-700 hover:border-cyan-400 p-3 rounded-xl text-left transition cursor-pointer"
-              >
-                <p className="text-xs font-bold text-white">Pro Trader</p>
-                <p className="text-[10px] text-slate-400 font-mono">trader@hub.com (ID 1)</p>
-              </button>
-              <button
-                type="button"
-                onClick={() => onLogin('cyber@hub.com')}
-                className="bg-[#060913] hover:bg-cyan-500/10 border border-slate-700 hover:border-cyan-400 p-3 rounded-xl text-left transition cursor-pointer"
-              >
-                <p className="text-xs font-bold text-white">Cyber Collector</p>
-                <p className="text-[10px] text-slate-400 font-mono">cyber@hub.com (ID 2)</p>
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* CARD DO FORMULÁRIO */}
         <div className="w-full bg-[#0a0f1d]/90 border border-slate-800 rounded-3xl p-8 shadow-3xl backdrop-blur-md space-y-6">
@@ -162,7 +163,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
                 {modo === 'login' && (
                   <button
                     type="button"
-                    className="text-[10px] font-mono text-slate-500 hover:text-cyan-400 uppercase transition"
+                    className="text-[10px] font-mono text-slate-500 hover:text-cyan-400 active:scale-[0.97] uppercase transition-all duration-150"
                   >
                     RECUPERAR ACESSO
                   </button>
@@ -181,7 +182,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 text-slate-500 hover:text-slate-300"
+                  className="absolute right-4 text-slate-500 hover:text-slate-300 active:scale-[0.97] transition-all duration-150"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -194,7 +195,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
             <button
               type="submit"
               disabled={carregando}
-              className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-slate-950 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-[0_0_25px_rgba(6,182,212,0.5)] cursor-pointer mt-2 flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 active:scale-[0.97] text-slate-950 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition-all duration-150 shadow-[0_0_25px_rgba(6,182,212,0.5)] cursor-pointer mt-2 flex items-center justify-center gap-2"
             >
               {modo === 'login' ? (
                 <>
@@ -209,7 +210,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
           </form>
 
           {/* ALTERNADOR DE MODO LOGIN / REGISTRO */}
-          <div className="pt-2 border-t border-slate-800/80 text-center text-xs text-slate-400 font-mono">
+          <div className="pt-2 text-center text-xs text-slate-400 font-mono before:block before:h-px before:w-full before:bg-gradient-to-r before:from-transparent before:via-slate-800 before:to-transparent">
             {modo === 'login' ? (
               <span>
                 Novo na plataforma?{' '}
@@ -219,7 +220,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
                     setModo('registro');
                     setErro('');
                   }}
-                  className="text-cyan-400 font-bold hover:underline cursor-pointer"
+                  className="text-cyan-400 font-bold hover:underline active:scale-[0.97] transition-all duration-150 cursor-pointer"
                 >
                   Inicializar Conta
                 </button>
@@ -233,7 +234,7 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
                     setModo('login');
                     setErro('');
                   }}
-                  className="text-cyan-400 font-bold hover:underline cursor-pointer"
+                  className="text-cyan-400 font-bold hover:underline active:scale-[0.97] transition-all duration-150 cursor-pointer"
                 >
                   Fazer Login
                 </button>
@@ -243,5 +244,6 @@ export const LoginForm = ({ onLogin }: LoginFormProps) => {
         </div>
       </div>
     </div>
+    </ForceField>
   );
 };

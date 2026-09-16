@@ -1,9 +1,12 @@
+import { ItemCard } from './ItemCard';
+
 interface ItemInventario {
   id: number;
   titulo: string;
   fotoUrl: string;
   estadoConservacao: string;
   raridade: string;
+  colecionadorId: number;
 }
 
 interface MeuInventarioProps {
@@ -35,23 +38,7 @@ export function MeuInventario({ itens, nomeUsuario }: MeuInventarioProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {itens.map((item) => (
-            <div key={item.id} className="bg-[#121824] border border-slate-800/80 rounded-xl p-4 flex flex-col gap-4 hover:border-cyan-500/40 transition">
-              <div className="w-full h-48 rounded-lg bg-[#090d14] overflow-hidden flex items-center justify-center border border-slate-800/50">
-                {item.fotoUrl ? (
-                  <img src={item.fotoUrl} alt={item.titulo} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-4xl">📦</span>
-                )}
-              </div>
-              <div>
-                <div className="flex items-center justify-between text-[10px] text-cyan-400 font-mono mb-1">
-                  <span>#{item.raridade?.toUpperCase() || 'ITEM'}</span>
-                  <span>SEU ITEM</span>
-                </div>
-                <h3 className="font-bold text-slate-100 truncate">{item.titulo}</h3>
-                <p className="text-xs text-slate-400 mt-1">{item.estadoConservacao || 'Conservado'}</p>
-              </div>
-            </div>
+            <ItemCard key={item.id} item={item} />
           ))}
         </div>
       )}
