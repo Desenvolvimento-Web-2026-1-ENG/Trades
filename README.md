@@ -149,7 +149,7 @@ Abaixo estão descritas as principais interfaces da aplicação **Trades**, dest
 
 ### 🎥 Vídeo de Demonstração
 
-[Clique aqui para assistir à demonstração em vídeo (YouTube / Loom / Drive)](URL_DO_VÍDEO)
+[Clique aqui para assistir à demonstração em vídeo (YouTube / Loom / Drive)](https://youtu.be/nL3KDqRDK48)
 
 ### 👨‍💻 Desenvolvedor
 
