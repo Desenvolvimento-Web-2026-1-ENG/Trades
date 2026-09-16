@@ -12,9 +12,10 @@ interface ItemInventario {
 interface MeuInventarioProps {
   itens: ItemInventario[];
   nomeUsuario: string;
+  onExcluirItem: (id: number) => void;
 }
 
-export function MeuInventario({ itens, nomeUsuario }: MeuInventarioProps) {
+export function MeuInventario({ itens, nomeUsuario, onExcluirItem }: MeuInventarioProps) {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between border-b border-slate-800/80 pb-5">
@@ -38,7 +39,7 @@ export function MeuInventario({ itens, nomeUsuario }: MeuInventarioProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {itens.map((item) => (
-            <ItemCard key={item.id} item={item} />
+            <ItemCard key={item.id} item={item} onExcluir={() => onExcluirItem(item.id)} />
           ))}
         </div>
       )}

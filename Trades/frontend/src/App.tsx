@@ -118,6 +118,24 @@ export default function App() {
     alert('Item cadastrado e registrado com sucesso!');
   };
 
+  const handleExcluirItem = async (id: number) => {
+    const item = itens.find((itemAtual) => itemAtual.id === id);
+    if (!item || Number(item.colecionadorId) !== usuarioLogado?.id) {
+      alert('Você só pode excluir itens do seu inventário.');
+      return;
+    }
+
+    if (!window.confirm(`Excluir o item "${item.titulo}"?`)) return;
+
+    try {
+      await axios.delete(`${API_BASE}/itens/${id}`);
+      await carregarItens();
+      alert('Item excluído com sucesso!');
+    } catch (e: any) {
+      alert(`Erro ao excluir item: ${e.response?.data?.mensagem || e.message}`);
+    }
+  };
+
   const handleCriarProposta = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -174,6 +192,28 @@ export default function App() {
       await carregarItens();
     } catch (e: any) {
       alert(`Erro ao aceitar proposta: ${e.response?.data?.mensagem || e.message}`);
+    }
+  };
+
+  const handleCancelarProposta = async (id: number) => {
+    const proposta = propostas.find((item) => item.id === id);
+    if (!proposta || Number(proposta.solicitanteId || proposta.idSolicitante) !== usuarioLogado?.id) {
+      alert('Apenas o solicitante pode cancelar esta proposta.');
+      return;
+    }
+
+    if (!window.confirm('Cancelar esta proposta?')) return;
+
+    try {
+      await axios.patch(`${API_BASE}/propostas/${id}/responder`, {
+        aceitar: false,
+        aceito: false,
+        status: 'RECUSADA'
+      });
+      await carregarPropostas();
+      alert('Proposta cancelada com sucesso!');
+    } catch (e: any) {
+      alert(`Erro ao cancelar proposta: ${e.response?.data?.mensagem || e.message}`);
     }
   };
 
@@ -360,7 +400,11 @@ export default function App() {
 
           {/* ABA INVENTÁRIO */}
           {abaAtiva === 'inventario' && (
-            <MeuInventario itens={itensDoUsuario} nomeUsuario={usuarioLogado.nome} />
+            <MeuInventario
+              itens={itensDoUsuario}
+              nomeUsuario={usuarioLogado.nome}
+              onExcluirItem={handleExcluirItem}
+            />
           )}
 
           {/* ABA PROPOSTAS */}
@@ -489,7 +533,16 @@ export default function App() {
                           </div>
                         )}
                         {status === 'PENDENTE' && !propostaRecebida && (
-                          <span className="text-xs text-slate-500 shrink-0">Aguardando resposta</span>
+                          <div className="flex items-center gap-3 shrink-0">
+                            <span className="text-xs text-slate-500">Aguardando resposta</span>
+                            <button
+                              type="button"
+                              onClick={() => handleCancelarProposta(p.id || idx + 1)}
+                              className="bg-rose-500/10 hover:bg-rose-500/20 active:scale-[0.97] text-rose-400 border border-rose-500/30 text-xs font-bold px-3 py-2 rounded-lg transition-all duration-150 cursor-pointer"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
                         )}
                       </div>
                     );

@@ -13,6 +13,7 @@ interface ItemCardProps {
   item: ItemCardData;
   mostrarDono?: boolean;
   onOferecerProposta?: () => void;
+  onExcluir?: () => void;
 }
 
 const estilosRaridade: Record<string, string> = {
@@ -23,7 +24,7 @@ const estilosRaridade: Record<string, string> = {
   mítico: 'bg-cyan-400/90 text-slate-950 border-cyan-200/80'
 };
 
-export function ItemCard({ item, mostrarDono = false, onOferecerProposta }: ItemCardProps) {
+export function ItemCard({ item, mostrarDono = false, onOferecerProposta, onExcluir }: ItemCardProps) {
   const raridade = item.raridade?.trim() || 'Item';
   const estiloRaridade = estilosRaridade[raridade.toLowerCase()] || 'bg-cyan-400/90 text-slate-950 border-cyan-200/80';
 
@@ -66,6 +67,15 @@ export function ItemCard({ item, mostrarDono = false, onOferecerProposta }: Item
             className="w-full mt-3 bg-cyan-400/10 hover:bg-cyan-400/20 active:scale-[0.97] text-cyan-400 border border-cyan-400/30 text-xs font-bold px-3 py-2 rounded-lg transition-all duration-150 cursor-pointer"
           >
             Oferecer proposta
+          </button>
+        )}
+        {onExcluir && (
+          <button
+            type="button"
+            onClick={onExcluir}
+            className="w-full mt-2 bg-rose-500/10 hover:bg-rose-500/20 active:scale-[0.97] text-rose-400 border border-rose-400/30 text-xs font-bold px-3 py-2 rounded-lg transition-all duration-150 cursor-pointer"
+          >
+            Excluir item
           </button>
         )}
       </div>
