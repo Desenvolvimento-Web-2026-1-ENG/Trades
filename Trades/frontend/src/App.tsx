@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LoginForm } from './components/LoginForm';
 import { NovoItemForm } from './components/NovoItemForm';
+import { MeuInventario } from './components/MeuInventario';
 
 const API_BASE = '/api';
 
@@ -33,13 +34,14 @@ interface Proposta {
 
 export default function App() {
   const [usuarioLogado, setUsuarioLogado] = useState<Colecionador | null>(null);
-  const [abaAtiva, setAbaAtiva] = useState<'painel' | 'propostas' | 'novoItem'>('painel');
+  const [abaAtiva, setAbaAtiva] = useState<'painel' | 'propostas' | 'novoItem' | 'inventario'>('painel');
 
   // Estados de Dados
   const [colecionadores, setColecionadores] = useState<Colecionador[]>([]);
   const [itens, setItens] = useState<Item[]>([]);
   const [propostas, setPropostas] = useState<Proposta[]>([]);
   const [busca, setBusca] = useState('');
+  const [filtroPropostas, setFiltroPropostas] = useState<'todas' | 'pendentes' | 'concluidas' | 'canceladas'>('todas');
 
   // Formulário Proposta
   const [formProposta, setFormProposta] = useState({ 
@@ -142,7 +144,23 @@ export default function App() {
     }
   };
 
+  const handleOferecerProposta = (item: Item) => {
+    setFormProposta({
+      solicitanteId: String(usuarioLogado?.id || ''),
+      destinatarioId: String(item.colecionadorId || ''),
+      itemSolicitanteId: '',
+      itemDestinatarioId: String(item.id)
+    });
+    setAbaAtiva('propostas');
+  };
+
   const handleAceitarProposta = async (id: number) => {
+    const proposta = propostas.find((item) => item.id === id);
+    if (!proposta || Number(proposta.destinatarioId || proposta.idDestinatario) !== usuarioLogado?.id) {
+      alert('Apenas o destinatário pode aceitar esta proposta.');
+      return;
+    }
+
     try {
       await axios.patch(`${API_BASE}/propostas/${id}/responder`, { 
         aceitar: true, 
@@ -151,6 +169,7 @@ export default function App() {
       });
       alert('Troca aceita com sucesso!');
       await carregarPropostas();
+      await carregarItens();
     } catch (e: any) {
       alert(`Erro ao aceitar proposta: ${e.response?.data?.mensagem || e.message}`);
     }
@@ -163,6 +182,15 @@ export default function App() {
   const itensFiltrados = itens.filter(i => 
     i.titulo.toLowerCase().includes(busca.toLowerCase())
   );
+
+  const itensDoUsuario = itens.filter((item) => Number(item.colecionadorId) === usuarioLogado.id);
+  const itensDoDestinatario = itens.filter((item) => Number(item.colecionadorId) === Number(formProposta.destinatarioId));
+  const propostasFiltradas = propostas.filter((proposta) => {
+    if (filtroPropostas === 'pendentes') return proposta.status === 'PENDENTE';
+    if (filtroPropostas === 'concluidas') return proposta.status === 'ACEITA';
+    if (filtroPropostas === 'canceladas') return proposta.status === 'RECUSADA';
+    return true;
+  });
 
   return (
     <div className="flex h-screen bg-[#090d14] text-slate-200 font-sans overflow-hidden">
@@ -208,6 +236,15 @@ export default function App() {
             >
               <span>🔄</span>
               <span>Propostas Ativas</span>
+            </button>
+            <button
+              onClick={() => setAbaAtiva('inventario')}
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+                abaAtiva === 'inventario' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+              }`}
+            >
+              <span>🗃️</span>
+              <span>Meu Inventário</span>
             </button>
             <button
               onClick={() => setAbaAtiva('novoItem')}
@@ -306,6 +343,15 @@ export default function App() {
                       </div>
                       <h4 className="font-bold text-slate-100 text-sm truncate">{item.titulo}</h4>
                       <p className="text-xs text-slate-400">{item.estadoConservacao || 'Conservado'}</p>
+                      {item.colecionadorId !== usuarioLogado.id && (
+                        <button
+                          type="button"
+                          onClick={() => handleOferecerProposta(item)}
+                          className="w-full mt-3 bg-cyan-400/10 hover:bg-cyan-400/20 text-cyan-400 border border-cyan-400/30 text-xs font-bold px-3 py-2 rounded-lg transition cursor-pointer"
+                        >
+                          Oferecer proposta
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -313,68 +359,142 @@ export default function App() {
             </div>
           )}
 
+          {/* ABA INVENTÁRIO */}
+          {abaAtiva === 'inventario' && (
+            <MeuInventario itens={itensDoUsuario} nomeUsuario={usuarioLogado.nome} />
+          )}
+
           {/* ABA PROPOSTAS */}
           {abaAtiva === 'propostas' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <form onSubmit={handleCriarProposta} className="bg-[#121824] border border-slate-800/80 p-6 rounded-xl space-y-4 h-fit">
-                <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Nova Proposta</h3>
-                <input
-                  type="number"
-                  placeholder="ID Solicitante"
-                  value={formProposta.solicitanteId}
-                  onChange={(e) => setFormProposta({ ...formProposta, solicitanteId: e.target.value })}
-                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="ID Destinatário"
-                  value={formProposta.destinatarioId}
-                  onChange={(e) => setFormProposta({ ...formProposta, destinatarioId: e.target.value })}
-                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="ID do Seu Item"
-                  value={formProposta.itemSolicitanteId}
-                  onChange={(e) => setFormProposta({ ...formProposta, itemSolicitanteId: e.target.value })}
-                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
-                  required
-                />
-                <input
-                  type="number"
-                  placeholder="ID do Item Desejado"
-                  value={formProposta.itemDestinatarioId}
-                  onChange={(e) => setFormProposta({ ...formProposta, itemDestinatarioId: e.target.value })}
-                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
-                  required
-                />
-                <button type="submit" className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold p-2.5 rounded-lg text-xs transition cursor-pointer">
-                  Enviar Proposta
-                </button>
-              </form>
-
-              <div className="lg:col-span-2 bg-[#121824] border border-slate-800/80 p-6 rounded-xl space-y-4">
-                <h3 className="text-sm font-semibold text-slate-200">Propostas Registradas</h3>
-                <div className="space-y-3">
-                  {propostas.map((p, idx) => (
-                    <div key={p.id || idx} className="flex justify-between items-center bg-[#090d14] p-4 rounded-lg border border-slate-800/60">
-                      <div>
-                        <span className="text-[10px] text-cyan-400 font-mono">PROPOSTA #{p.id || idx + 1}</span>
-                        <p className="text-xs font-medium text-slate-200">Solicitante #{p.solicitanteId || p.idSolicitante} ➔ Destinatário #{p.destinatarioId || p.idDestinatario}</p>
-                        <span className="inline-block text-[10px] font-bold text-amber-400 mt-1 uppercase">{p.status || 'PENDENTE'}</span>
-                      </div>
-                      {p.status !== 'ACEITA' && (
-                        <button
-                          onClick={() => handleAceitarProposta(p.id || idx + 1)}
-                          className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 text-xs font-bold px-3 py-1.5 rounded-lg transition"
-                        >
-                          Aceitar
-                        </button>
-                      )}
-                    </div>
+            <div className="space-y-6">
+              <div className="flex flex-col gap-5 border-b border-slate-800/80 pb-5 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                  <span className="text-xs font-mono uppercase text-cyan-400 tracking-wider">CENTRAL DE NEGOCIAÇÕES</span>
+                  <h2 className="text-2xl font-bold text-white tracking-tight">Propostas de troca</h2>
+                  <p className="text-xs text-slate-400 mt-2 max-w-xl">Gerencie suas negociações ativas, avalie ofertas da comunidade e expanda seu portfólio.</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    ['todas', 'Todas'],
+                    ['pendentes', 'Pendentes'],
+                    ['concluidas', 'Concluídas'],
+                    ['canceladas', 'Canceladas']
+                  ].map(([valor, texto]) => (
+                    <button
+                      key={valor}
+                      type="button"
+                      onClick={() => setFiltroPropostas(valor as typeof filtroPropostas)}
+                      className={`rounded-full px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition cursor-pointer ${
+                        filtroPropostas === valor
+                          ? 'bg-cyan-400 text-slate-950'
+                          : 'bg-[#121824] text-slate-400 border border-slate-800 hover:text-slate-200'
+                      }`}
+                    >
+                      {texto}
+                    </button>
                   ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                <form onSubmit={handleCriarProposta} className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl space-y-4 h-fit">
+                  <div>
+                    <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Nova proposta</h3>
+                    <p className="text-xs text-slate-500 mt-1">Escolha os itens envolvidos na troca.</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-slate-500">Colecionador</label>
+                    <select
+                      value={formProposta.destinatarioId}
+                      onChange={(e) => setFormProposta({ ...formProposta, destinatarioId: e.target.value, itemDestinatarioId: '' })}
+                      className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                      required
+                    >
+                      <option value="">Selecione quem receberá a oferta</option>
+                      {colecionadores.filter((c) => c.id !== usuarioLogado.id).map((colecionador) => (
+                        <option key={colecionador.id} value={colecionador.id}>{colecionador.nome}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-slate-500">Seu item</label>
+                    <select
+                      value={formProposta.itemSolicitanteId}
+                      onChange={(e) => setFormProposta({ ...formProposta, itemSolicitanteId: e.target.value })}
+                      className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                      required
+                    >
+                      <option value="">Selecione o item que você oferece</option>
+                      {itensDoUsuario.map((item) => <option key={item.id} value={item.id}>{item.titulo}</option>)}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono uppercase tracking-wider text-slate-500">Item desejado</label>
+                    <select
+                      value={formProposta.itemDestinatarioId}
+                      onChange={(e) => setFormProposta({ ...formProposta, itemDestinatarioId: e.target.value })}
+                      className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                      required
+                    >
+                      <option value="">Selecione o item desejado</option>
+                      {itensDoDestinatario.map((item) => <option key={item.id} value={item.id}>{item.titulo}</option>)}
+                    </select>
+                  </div>
+
+                  <button type="submit" className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold p-2.5 rounded-lg text-xs transition cursor-pointer">
+                    Enviar proposta
+                  </button>
+                </form>
+
+                <div className="xl:col-span-2 space-y-3">
+                  {propostasFiltradas.length === 0 && (
+                    <div className="bg-[#121824] border border-slate-800/80 rounded-xl p-8 text-center text-sm text-slate-500">
+                      Nenhuma proposta encontrada nessa categoria.
+                    </div>
+                  )}
+                  {propostasFiltradas.map((p, idx) => {
+                    const solicitante = colecionadores.find((c) => c.id === (p.solicitanteId || p.idSolicitante));
+                    const destinatario = colecionadores.find((c) => c.id === (p.destinatarioId || p.idDestinatario));
+                    const status = p.status || 'PENDENTE';
+                    const propostaRecebida = Number(p.destinatarioId || p.idDestinatario) === usuarioLogado.id;
+                    const statusClass = status === 'ACEITA'
+                      ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
+                      : status === 'RECUSADA'
+                        ? 'text-rose-400 bg-rose-500/10 border-rose-500/20'
+                        : 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+
+                    return (
+                      <div key={p.id || idx} className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <div className="flex items-center gap-3 mb-2">
+                            <span className="text-[10px] text-cyan-400 font-mono uppercase">Proposta #{p.id || idx + 1}</span>
+                            <span className={`rounded-full border px-2 py-1 text-[9px] font-bold uppercase ${statusClass}`}>{status}</span>
+                          </div>
+                          <p className="text-sm font-semibold text-slate-200">
+                            {solicitante?.nome || 'Colecionador'} <span className="text-slate-600">ofereceu uma troca para</span> {destinatario?.nome || 'você'}
+                          </p>
+                          <p className="text-xs text-slate-500 mt-1">Avalie a oferta e responda quando estiver pronto.</p>
+                        </div>
+                        {status === 'PENDENTE' && propostaRecebida && (
+                          <div className="flex gap-2 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => handleAceitarProposta(p.id || idx + 1)}
+                              className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 text-xs font-bold px-4 py-2 rounded-lg transition cursor-pointer"
+                            >
+                              Aceitar
+                            </button>
+                          </div>
+                        )}
+                        {status === 'PENDENTE' && !propostaRecebida && (
+                          <span className="text-xs text-slate-500 shrink-0">Aguardando resposta</span>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -383,6 +503,7 @@ export default function App() {
           {/* ABA CADASTRAR ITEM (REPLAYED BY NovoItemForm) */}
           {abaAtiva === 'novoItem' && (
             <NovoItemForm
+              usuarioLogadoId={usuarioLogado.id}
               onSubmit={handleSucessoCadastroItem}
               onCancel={() => setAbaAtiva('painel')}
             />
