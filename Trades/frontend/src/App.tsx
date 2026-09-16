@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { LoginForm } from './components/LoginForm';
+import { NovoItemForm } from './components/NovoItemForm';
 
 const API_BASE = '/api';
 
@@ -30,17 +32,22 @@ interface Proposta {
 }
 
 export default function App() {
-  const [abaAtiva, setAbaAtiva] = useState<'colecionadores' | 'itens' | 'propostas'>('colecionadores');
+  const [usuarioLogado, setUsuarioLogado] = useState<Colecionador | null>(null);
+  const [abaAtiva, setAbaAtiva] = useState<'painel' | 'propostas' | 'novoItem'>('painel');
 
   // Estados de Dados
   const [colecionadores, setColecionadores] = useState<Colecionador[]>([]);
   const [itens, setItens] = useState<Item[]>([]);
   const [propostas, setPropostas] = useState<Proposta[]>([]);
+  const [busca, setBusca] = useState('');
 
-  // Formulários
-  const [formColecionador, setFormColecionador] = useState({ nome: '', email: '', perfil: 'COLECIONADOR' });
-  const [formItem, setFormItem] = useState({ titulo: '', fotoUrl: '', estadoConservacao: 'Novo', raridade: 'Raro', colecionadorId: '' });
-  const [formProposta, setFormProposta] = useState({ solicitanteId: '', destinatarioId: '', itemSolicitanteId: '', itemDestinatarioId: '' });
+  // Formulário Proposta
+  const [formProposta, setFormProposta] = useState({ 
+    solicitanteId: '', 
+    destinatarioId: '', 
+    itemSolicitanteId: '', 
+    itemDestinatarioId: '' 
+  });
 
   // Carregar dados ao iniciar
   useEffect(() => {
@@ -49,15 +56,17 @@ export default function App() {
     carregarPropostas();
   }, []);
 
-  const carregarColecionadores = async () => {
+  const carregarColecionadores = async (): Promise<Colecionador[]> => {
     try {
       const res = await axios.get(`${API_BASE}/colecionadores`);
-      const dados = Array.isArray(res.data) 
+      const dados: Colecionador[] = Array.isArray(res.data) 
         ? res.data 
         : (res.data.colecionadores || res.data.data || []);
       setColecionadores(dados);
+      return dados;
     } catch (e) {
       console.error('Erro ao buscar colecionadores:', e);
+      return [];
     }
   };
 
@@ -74,82 +83,62 @@ export default function App() {
   };
 
   const carregarPropostas = async () => {
-  try {
-    const res = await axios.get(`${API_BASE}/propostas`);
-    console.log('Dados recebidos do GET /propostas:', res.data);
-
-    // Mapeia caso a API devolva um Array direto, dentro de data, propostas, rows ou content
-    const dados = Array.isArray(res.data) 
-      ? res.data 
-      : (res.data.propostas || res.data.data || res.data.rows || res.data.content || []);
-      
-    setPropostas(dados);
-  } catch (e) { 
-    console.error('Erro ao buscar propostas:', e); 
-  }
-};
-
-
-  // Submissões de Formulários
-  const handleCadastrarColecionador = async (e: React.FormEvent) => {
-    e.preventDefault();
     try {
-      const resposta = await axios.post(`${API_BASE}/colecionadores`, formColecionador);
-      console.log('Colecionador cadastrado com sucesso:', resposta.data);
-      setFormColecionador({ nome: '', email: '', perfil: 'COLECIONADOR' });
-      await carregarColecionadores();
-    } catch (e: any) {
-      console.error('Erro ao cadastrar colecionador:', e);
-      alert(`Erro ao cadastrar: ${e.response?.data?.mensagem || e.message}`);
+      const res = await axios.get(`${API_BASE}/propostas`);
+      const dados = Array.isArray(res.data) 
+        ? res.data 
+        : (res.data.propostas || res.data.data || res.data.rows || res.data.content || []);
+      setPropostas(dados);
+    } catch (e) { 
+      console.error('Erro ao buscar propostas:', e); 
     }
   };
 
-  const handleCadastrarItem = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await axios.post(`${API_BASE}/itens`, {
-        ...formItem,
-        colecionadorId: Number(formItem.colecionadorId)
-      });
-      setFormItem({ titulo: '', fotoUrl: '', estadoConservacao: 'Novo', raridade: 'Raro', colecionadorId: '' });
-      await carregarItens();
-    } catch (e: any) {
-      console.error('Erro ao cadastrar item:', e);
-      alert(`Erro ao cadastrar item: ${e.response?.data?.mensagem || e.message}`);
+  const handleLogin = async (email: string) => {
+    const listaAtualizada = await carregarColecionadores();
+    const encontrado = listaAtualizada.find(
+      (c) => c.email.trim().toLowerCase() === email.trim().toLowerCase()
+    );
+
+    if (encontrado) {
+      setUsuarioLogado(encontrado);
+    } else {
+      alert('Conta não encontrada! Verifique o e-mail cadastrado.');
     }
   };
 
- const handleCriarProposta = async (e: React.FormEvent) => {
+  // Callback chamado após salvar no NovoItemForm
+  const handleSucessoCadastroItem = async () => {
+    await carregarItens();
+    setAbaAtiva('painel');
+    alert('Item cadastrado e registrado com sucesso!');
+  };
+
+  const handleCriarProposta = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const solId = Number(formProposta.solicitanteId);
+      const solId = Number(formProposta.solicitanteId || usuarioLogado?.id);
       const destId = Number(formProposta.destinatarioId);
       const itemSolId = Number(formProposta.itemSolicitanteId);
       const itemDestId = Number(formProposta.itemDestinatarioId);
 
-      // Payload exatamente no formato esperado pelo CriarPropostaTrocaDTO
       const payload = {
         solicitanteId: solId,
         destinatarioId: destId,
         itensSolicitanteIds: [itemSolId],
         itensDestinatarioIds: [itemDestId],
-        // DTOs legados/alternativos como fallback
         idSolicitante: solId,
         idDestinatario: destId,
         itemSolicitanteId: itemSolId,
         itemDestinatarioId: itemDestId
       };
 
-      const res = await axios.post(`${API_BASE}/propostas`, payload);
-      console.log('Proposta criada:', res.data);
-
+      await axios.post(`${API_BASE}/propostas`, payload);
       setFormProposta({ solicitanteId: '', destinatarioId: '', itemSolicitanteId: '', itemDestinatarioId: '' });
-      
       await carregarPropostas();
       alert('Proposta criada com sucesso!');
     } catch (e: any) {
-      console.error('Erro ao criar proposta:', e);
-      alert(`Erro ao criar proposta: ${e.response?.data?.mensagem || e.response?.data?.error || e.message}`);
+      alert(`Erro ao criar proposta: ${e.response?.data?.mensagem || e.message}`);
     }
   };
 
@@ -163,127 +152,160 @@ export default function App() {
       alert('Troca aceita com sucesso!');
       await carregarPropostas();
     } catch (e: any) {
-      console.error('Erro ao aceitar proposta:', e);
       alert(`Erro ao aceitar proposta: ${e.response?.data?.mensagem || e.message}`);
     }
   };
 
+  if (!usuarioLogado) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
+  const itensFiltrados = itens.filter(i => 
+    i.titulo.toLowerCase().includes(busca.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-6 font-sans">
-      <div className="max-w-5xl mx-auto">
-        {/* Header / Navbar */}
-        <header className="flex flex-col md:flex-row justify-between items-center pb-6 border-b border-slate-700 gap-4">
-          <h1 className="text-2xl font-bold tracking-wide text-indigo-400">⚡ Trade Hub P2</h1>
-          <nav className="flex space-x-2 bg-slate-800 p-1.5 rounded-lg border border-slate-700">
-            {(['colecionadores', 'itens', 'propostas'] as const).map((aba) => (
-              <button
-                key={aba}
-                onClick={() => setAbaAtiva(aba)}
-                className={`px-4 py-2 rounded-md font-medium text-sm capitalize transition ${
-                  abaAtiva === aba ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                {aba}
-              </button>
-            ))}
+    <div className="flex h-screen bg-[#090d14] text-slate-200 font-sans overflow-hidden">
+      
+      {/* BARRA LATERAL ESQUERDA (SIDEBAR) */}
+      <aside className="w-64 bg-[#0d121d] border-r border-slate-800/80 flex flex-col justify-between p-5">
+        <div className="space-y-6">
+          {/* Logo */}
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 font-bold">
+              ⚡
+            </div>
+            <div>
+              <h1 className="font-bold text-white text-base tracking-wide">Trader Pro</h1>
+              <span className="text-[10px] text-cyan-400 font-mono uppercase tracking-wider">Nível {usuarioLogado.id}</span>
+            </div>
+          </div>
+
+          {/* Botão Nova Proposta */}
+          <button 
+            onClick={() => setAbaAtiva('propostas')}
+            className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold py-2.5 px-4 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/10 transition cursor-pointer"
+          >
+            <span>+</span> Nova Proposta
+          </button>
+
+          {/* Menu de Navegação */}
+          <nav className="space-y-1 text-sm">
+            <button
+              onClick={() => setAbaAtiva('painel')}
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+                abaAtiva === 'painel' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+              }`}
+            >
+              <span>📊</span>
+              <span>Painel</span>
+            </button>
+            <button
+              onClick={() => setAbaAtiva('propostas')}
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+                abaAtiva === 'propostas' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+              }`}
+            >
+              <span>🔄</span>
+              <span>Propostas Ativas</span>
+            </button>
+            <button
+              onClick={() => setAbaAtiva('novoItem')}
+              className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg font-medium transition ${
+                abaAtiva === 'novoItem' ? 'bg-indigo-600/20 text-indigo-400 border-l-2 border-indigo-500' : 'text-slate-400 hover:bg-slate-800/50 hover:text-slate-200'
+              }`}
+            >
+              <span>📦</span>
+              <span>Cadastrar Item</span>
+            </button>
           </nav>
+        </div>
+
+        {/* Rodapé da Sidebar */}
+        <div className="pt-4 border-t border-slate-800/60 space-y-2 text-xs text-slate-400">
+          <button 
+            onClick={() => setUsuarioLogado(null)} 
+            className="w-full flex items-center space-x-2 px-3 py-2 rounded-lg text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+          >
+            <span>🚪</span>
+            <span>SAIR</span>
+          </button>
+        </div>
+      </aside>
+
+      {/* ÁREA CENTRAL PRINCIPAL */}
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        
+        {/* Header Superior */}
+        <header className="h-16 border-b border-slate-800/80 px-8 flex items-center justify-between bg-[#0b0f19]/50 backdrop-blur-sm sticky top-0 z-10">
+          <div className="w-96 relative">
+            <input
+              type="text"
+              placeholder="Pesquisar no mercado..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              className="w-full bg-[#121824] border border-slate-800 rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500/50"
+            />
+            <span className="absolute left-3 top-2 text-xs text-slate-500">🔍</span>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <span className="flex items-center space-x-2 text-xs bg-[#121824] border border-slate-800 px-3 py-1.5 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span className="text-slate-400">AO VIVO</span>
+            </span>
+            
+            <div className="text-right">
+              <div className="text-xs font-bold text-slate-100">{usuarioLogado.nome}</div>
+              <div className="text-[10px] text-cyan-400 font-mono">TRADER PRO #{usuarioLogado.id}</div>
+            </div>
+          </div>
         </header>
 
-        {/* Conteúdo Principal */}
-        <main className="mt-8">
-          {/* Aba Colecionadores */}
-          {abaAtiva === 'colecionadores' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <form onSubmit={handleCadastrarColecionador} className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
-                <h2 className="text-lg font-semibold text-indigo-300">Novo Colecionador</h2>
-                <input
-                  type="text"
-                  placeholder="Nome"
-                  value={formColecionador.nome}
-                  onChange={(e) => setFormColecionador({ ...formColecionador, nome: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-indigo-500"
-                  required
-                />
-                <input
-                  type="email"
-                  placeholder="E-mail"
-                  value={formColecionador.email}
-                  onChange={(e) => setFormColecionador({ ...formColecionador, email: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm focus:outline-none focus:border-indigo-500"
-                  required
-                />
-                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition cursor-pointer">
-                  Cadastrar
-                </button>
-              </form>
+        {/* Conteúdo Dinâmico */}
+        <div className="p-8 space-y-8 flex-1">
+          <div>
+            <span className="text-xs font-mono uppercase text-cyan-400 tracking-wider">MERCADO GLOBAL</span>
+            <h2 className="text-2xl font-bold text-white tracking-tight">Painel Terminal</h2>
+          </div>
 
-              <div className="md:col-span-2 bg-slate-800 p-6 rounded-xl border border-slate-700">
-                <h2 className="text-lg font-semibold text-indigo-300 mb-4">Lista de Colecionadores</h2>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm text-slate-300">
-                    <thead className="bg-slate-900 text-slate-400 uppercase text-xs">
-                      <tr>
-                        <th className="p-3">ID</th>
-                        <th className="p-3">Nome</th>
-                        <th className="p-3">E-mail</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {colecionadores.map((c) => (
-                        <tr key={c.id} className="border-b border-slate-700/50 hover:bg-slate-750">
-                          <td className="p-3 font-mono text-indigo-400">#{c.id}</td>
-                          <td className="p-3 font-medium text-slate-100">{c.nome}</td>
-                          <td className="p-3">{c.email}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+          {/* Cards de Métricas */}
+          <div className="grid grid-cols-3 gap-4">
+            <div className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl space-y-1">
+              <span className="text-xs text-slate-400 font-medium">Total de Itens</span>
+              <div className="text-2xl font-bold text-white font-mono">{itens.length}</div>
             </div>
-          )}
+            <div className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl space-y-1">
+              <span className="text-xs text-slate-400 font-medium">Trocas Ativas</span>
+              <div className="text-2xl font-bold text-white font-mono">{propostas.length}</div>
+            </div>
+            <div className="bg-[#121824] border border-slate-800/80 p-5 rounded-xl space-y-1">
+              <span className="text-xs text-slate-400 font-medium">Colecionadores</span>
+              <div className="text-2xl font-bold text-cyan-400 font-mono">{colecionadores.length}</div>
+            </div>
+          </div>
 
-          {/* Aba Itens */}
-          {abaAtiva === 'itens' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <form onSubmit={handleCadastrarItem} className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
-                <h2 className="text-lg font-semibold text-indigo-300">Novo Item</h2>
-                <input
-                  type="text"
-                  placeholder="Título do Item"
-                  value={formItem.titulo}
-                  onChange={(e) => setFormItem({ ...formItem, titulo: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="URL da Foto"
-                  value={formItem.fotoUrl}
-                  onChange={(e) => setFormItem({ ...formItem, fotoUrl: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                />
-                <input
-                  type="number"
-                  placeholder="ID do Colecionador Dono"
-                  value={formItem.colecionadorId}
-                  onChange={(e) => setFormItem({ ...formItem, colecionadorId: e.target.value })}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                  required
-                />
-                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition cursor-pointer">
-                  Cadastrar Item
-                </button>
-              </form>
-
-              <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {itens.map((i) => (
-                  <div key={i.id} className="bg-slate-800 p-4 rounded-xl border border-slate-700 flex space-x-4">
-                    {i.fotoUrl && <img src={i.fotoUrl} alt={i.titulo} className="w-16 h-16 object-cover rounded-lg bg-slate-900" />}
+          {/* ABA PAINEL */}
+          {abaAtiva === 'painel' && (
+            <div className="space-y-4">
+              <h3 className="text-base font-semibold text-slate-200">Tendências Agora</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {itensFiltrados.map((item) => (
+                  <div key={item.id} className="bg-[#121824] border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition space-y-3">
+                    <div className="w-full h-40 rounded-lg bg-[#090d14] overflow-hidden flex items-center justify-center border border-slate-800/50">
+                      {item.fotoUrl ? (
+                        <img src={item.fotoUrl} alt={item.titulo} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-3xl">📦</span>
+                      )}
+                    </div>
                     <div>
-                      <span className="text-xs text-indigo-400 font-mono">Item #{i.id} (Dono #{i.colecionadorId})</span>
-                      <h3 className="font-bold text-slate-100">{i.titulo}</h3>
-                      <p className="text-xs text-slate-400 mt-1">{i.estadoConservacao} • {i.raridade}</p>
+                      <div className="flex items-center justify-between text-[10px] text-cyan-400 font-mono mb-1">
+                        <span>#{item.raridade?.toUpperCase() || 'ITEM'}</span>
+                        <span>DONO #{item.colecionadorId}</span>
+                      </div>
+                      <h4 className="font-bold text-slate-100 text-sm truncate">{item.titulo}</h4>
+                      <p className="text-xs text-slate-400">{item.estadoConservacao || 'Conservado'}</p>
                     </div>
                   </div>
                 ))}
@@ -291,88 +313,113 @@ export default function App() {
             </div>
           )}
 
-          {/* Aba Propostas */}
+          {/* ABA PROPOSTAS */}
           {abaAtiva === 'propostas' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <form onSubmit={handleCriarProposta} className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
-                <h2 className="text-lg font-semibold text-indigo-300">Criar Proposta de Troca</h2>
-                <div className="grid grid-cols-2 gap-2">
-                  <input
-                    type="number"
-                    placeholder="ID Solicitante"
-                    value={formProposta.solicitanteId}
-                    onChange={(e) => setFormProposta({ ...formProposta, solicitanteId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                    required
-                  />
-                  <input
-                    type="number"
-                    placeholder="ID Destinatário"
-                    value={formProposta.destinatarioId}
-                    onChange={(e) => setFormProposta({ ...formProposta, destinatarioId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <input
-                    type="number"
-                    placeholder="ID Item Ofertado"
-                    value={formProposta.itemSolicitanteId}
-                    onChange={(e) => setFormProposta({ ...formProposta, itemSolicitanteId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                    required
-                  />
-                  <input
-                    type="number"
-                    placeholder="ID Item Desejado"
-                    value={formProposta.itemDestinatarioId}
-                    onChange={(e) => setFormProposta({ ...formProposta, itemDestinatarioId: e.target.value })}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-sm"
-                    required
-                  />
-                </div>
-                <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 font-semibold p-2.5 rounded-lg text-sm transition cursor-pointer">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <form onSubmit={handleCriarProposta} className="bg-[#121824] border border-slate-800/80 p-6 rounded-xl space-y-4 h-fit">
+                <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider">Nova Proposta</h3>
+                <input
+                  type="number"
+                  placeholder="ID Solicitante"
+                  value={formProposta.solicitanteId}
+                  onChange={(e) => setFormProposta({ ...formProposta, solicitanteId: e.target.value })}
+                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder="ID Destinatário"
+                  value={formProposta.destinatarioId}
+                  onChange={(e) => setFormProposta({ ...formProposta, destinatarioId: e.target.value })}
+                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder="ID do Seu Item"
+                  value={formProposta.itemSolicitanteId}
+                  onChange={(e) => setFormProposta({ ...formProposta, itemSolicitanteId: e.target.value })}
+                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder="ID do Item Desejado"
+                  value={formProposta.itemDestinatarioId}
+                  onChange={(e) => setFormProposta({ ...formProposta, itemDestinatarioId: e.target.value })}
+                  className="w-full bg-[#090d14] border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200"
+                  required
+                />
+                <button type="submit" className="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold p-2.5 rounded-lg text-xs transition cursor-pointer">
                   Enviar Proposta
                 </button>
               </form>
 
-              <div className="md:col-span-2 bg-slate-800 p-6 rounded-xl border border-slate-700">
-                <h2 className="text-lg font-semibold text-indigo-300 mb-4">Propostas Registradas</h2>
+              <div className="lg:col-span-2 bg-[#121824] border border-slate-800/80 p-6 rounded-xl space-y-4">
+                <h3 className="text-sm font-semibold text-slate-200">Propostas Registradas</h3>
                 <div className="space-y-3">
-                  {propostas.map((p, idx) => {
-                    const solId = p.solicitanteId || p.idSolicitante || '?';
-                    const destId = p.destinatarioId || p.idDestinatario || '?';
-                    const status = p.status || 'PENDENTE';
-
-                    return (
-                      <div key={p.id || idx} className="flex justify-between items-center bg-slate-900 p-4 rounded-lg border border-slate-700/50">
-                        <div>
-                          <span className="text-xs text-indigo-400 font-mono">Proposta #{p.id || idx + 1}</span>
-                          <p className="text-sm font-medium">Solicitante #{solId} ➔ Destinatário #{destId}</p>
-                          <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded mt-1 ${
-                            status === 'ACEITA' || status === 'CONCLUIDA' ? 'bg-emerald-900/50 text-emerald-400 border border-emerald-700' : 'bg-amber-900/50 text-amber-400 border border-amber-700'
-                          }`}>
-                            {status}
-                          </span>
-                        </div>
-                        {status !== 'ACEITA' && status !== 'CONCLUIDA' && (
-                          <button
-                            onClick={() => handleAceitarProposta(p.id || idx + 1)}
-                            className="bg-emerald-600 hover:bg-emerald-500 text-xs font-bold px-3 py-2 rounded-md transition cursor-pointer text-white"
-                          >
-                            Aceitar Troca
-                          </button>
-                        )}
+                  {propostas.map((p, idx) => (
+                    <div key={p.id || idx} className="flex justify-between items-center bg-[#090d14] p-4 rounded-lg border border-slate-800/60">
+                      <div>
+                        <span className="text-[10px] text-cyan-400 font-mono">PROPOSTA #{p.id || idx + 1}</span>
+                        <p className="text-xs font-medium text-slate-200">Solicitante #{p.solicitanteId || p.idSolicitante} ➔ Destinatário #{p.destinatarioId || p.idDestinatario}</p>
+                        <span className="inline-block text-[10px] font-bold text-amber-400 mt-1 uppercase">{p.status || 'PENDENTE'}</span>
                       </div>
-                    );
-                  })}
+                      {p.status !== 'ACEITA' && (
+                        <button
+                          onClick={() => handleAceitarProposta(p.id || idx + 1)}
+                          className="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 text-xs font-bold px-3 py-1.5 rounded-lg transition"
+                        >
+                          Aceitar
+                        </button>
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           )}
-        </main>
+
+          {/* ABA CADASTRAR ITEM (REPLAYED BY NovoItemForm) */}
+          {abaAtiva === 'novoItem' && (
+            <NovoItemForm
+              onSubmit={handleSucessoCadastroItem}
+              onCancel={() => setAbaAtiva('painel')}
+            />
+          )}
+        </div>
       </div>
+
+      {/* PAINEL LATERAL DIREITO (COLECIONADORES) */}
+      <aside className="w-80 bg-[#0d121d] border-l border-slate-800/80 p-6 flex flex-col justify-between overflow-y-auto">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center pb-2 border-b border-slate-800/60">
+            <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Colecionadores</h3>
+            <span className="text-[10px] bg-slate-800 text-cyan-400 px-2 py-0.5 rounded-full font-mono">{colecionadores.length}</span>
+          </div>
+
+          <div className="space-y-3">
+            {colecionadores.map((c) => (
+              <div 
+                key={c.id} 
+                className="bg-[#121824] border border-slate-800/60 p-3 rounded-xl flex items-center space-x-3 hover:border-slate-700 transition"
+              >
+                <div className="w-8 h-8 rounded-full bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center text-xs font-bold text-indigo-400 shrink-0">
+                  {c.nome.charAt(0).toUpperCase()}
+                </div>
+                <div className="overflow-hidden flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-slate-100 truncate">{c.nome}</span>
+                    <span className="text-[10px] text-cyan-400 font-mono">#{c.id}</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 truncate">{c.email}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </aside>
+
     </div>
   );
 }
