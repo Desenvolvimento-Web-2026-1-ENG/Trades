@@ -16,7 +16,8 @@ export class PropostaTrocaRepositoryInMemory {
     const novaProposta: PropostaTroca = {
       id: proximoId++,
       ...dados,
-      status: 'PENDENTE'
+      status: 'PENDENTE',
+      dataCriacao: new Date().toISOString()
     };
     propostas.push(novaProposta);
     return novaProposta;

@@ -32,6 +32,7 @@ interface Proposta {
   idSolicitante?: number;
   idDestinatario?: number;
   status: string;
+  dataCriacao?: string;
 }
 
 export default function App() {
@@ -503,6 +504,9 @@ export default function App() {
                     const destinatario = colecionadores.find((c) => c.id === (p.destinatarioId || p.idDestinatario));
                     const status = p.status || 'PENDENTE';
                     const propostaRecebida = Number(p.destinatarioId || p.idDestinatario) === usuarioLogado.id;
+                    const dataCriacao = p.dataCriacao
+                      ? new Date(p.dataCriacao).toLocaleString('pt-BR')
+                      : 'Data não disponível';
                     const statusClass = status === 'ACEITA'
                       ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20'
                       : status === 'RECUSADA'
@@ -519,6 +523,7 @@ export default function App() {
                           <p className="text-sm font-semibold text-slate-200">
                             {solicitante?.nome || 'Colecionador'} <span className="text-slate-600">ofereceu uma troca para</span> {destinatario?.nome || 'você'}
                           </p>
+                          <p className="text-xs text-slate-500 mt-1">Criada em {dataCriacao}</p>
                           <p className="text-xs text-slate-500 mt-1">Avalie a oferta e responda quando estiver pronto.</p>
                         </div>
                         {status === 'PENDENTE' && propostaRecebida && (

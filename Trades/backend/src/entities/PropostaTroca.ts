@@ -7,4 +7,5 @@ export interface PropostaTroca {
   itensSolicitanteIds: number[]; // Relação ManyToMany (Itens oferecidos)
   itensDestinatarioIds: number[]; // Relação ManyToMany (Itens desejados)
   status: StatusProposta;
+  dataCriacao: string;
 }

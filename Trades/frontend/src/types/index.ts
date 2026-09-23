@@ -24,7 +24,7 @@ export interface Proposta {
   itensOferecidos: Item[]; // Itens do Solicitante
   itensDesejados: Item[];   // Itens do Destinatário
   status: 'PENDENTE' | 'ACEITA' | 'RECUSADA';
-  dataCriacao?: string;
+  dataCriacao: string;
 }
 
 export interface FormItemState {
